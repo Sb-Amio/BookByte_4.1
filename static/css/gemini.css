@@ -1,0 +1,599 @@
+/* --- Basic Reset & Global Styles --- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    height: 100%;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+}
+
+body {
+    background-color: #ffffff; /* Light greyish page background */
+    display: flex;
+    justify-content: center; /* Center content horizontally */
+}
+
+
+
+/* --- Main Page Layout --- */
+.page-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffff; /* White main area background */
+     max-width: 1100px; 
+}
+
+
+.back-button {
+    position: absolute;
+    top: 20px; /* Adjust vertical position */
+    left: 20px; /* Adjust horizontal position */
+    z-index: 10; /* Ensure it's above other content if needed */
+
+    display: flex;
+    align-items: center;
+    background-color: #f1f1f1; /* Light grey background */
+    color: #333; /* Dark text/icon */
+    border: none;
+    border-radius: 25px; /* Pill shape */
+    padding: 8px 12px; /* Initial padding */
+    cursor: pointer;
+    overflow: hidden; /* Crucial to hide text initially */
+    white-space: nowrap; /* Prevent text wrapping during transition */
+
+    /* --- Initial State --- */
+    width: 35px; /* Start with width just for icon + padding */
+    /* Calculated approx: 16px icon + 2*12px padding = 40px */
+
+
+    /* --- Transition --- */
+    transition: width 0.15s ease-in-out, background-color 1.5s ease;
+}
+
+.back-button i {
+    font-size: 1em; /* Adjust icon size if needed */
+    line-height: 1; /* Ensure icon aligns well vertically */
+    /* Icon is always visible */
+}
+
+.back-button .back-text {
+    display: inline-block; /* Needed for layout */
+    margin-left: 8px; /* Space between icon and text */
+    font-weight: 500;
+    opacity: 0; /* Start fully transparent */
+    transition: opacity 0.1s ease-in-out 0.1s; /* Fade in slightly delayed */
+    /* Text will be revealed by the width transition */
+}
+
+/* --- Hover State --- */
+.back-button:hover {
+    background-color: #e0e0e0; /* Slightly darker on hover */
+    width: 70px; /* Expanded width: 40px (initial) + ~8px (margin) + ~47px (text) */
+    /* Adjust this width based on your font/text size */
+}
+
+.back-button:hover .back-text {
+    opacity: 1; /* Fade in text on hover */
+}
+
+.back-button:active {
+    background-color: #d5d5d5; /* Even darker when clicked */
+}
+
+.profile-picture {
+    position: absolute;
+    top: 15px; /* Align vertically similar to back button, adjust as needed */
+    right: 20px; /* Position from the right edge */
+    z-index: 10; /* Ensure it's above other content */
+
+    width: 45px;  /* Desired size of the circle */
+    height: 45px; /* Must be equal to width for a circle */
+    border-radius: 50%; /* Makes the div circular */
+    overflow: hidden; /* Clips the image corners to fit the circle */
+    background-color: #e0e0e0; /* Fallback background if image fails */
+    cursor: pointer; /* Indicate it might be clickable */
+    border: 2px solid #ffffff; /* Optional: White border */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15); /* Subtle shadow */
+    transition: transform 0.2s ease; /* Add slight effect on hover/active */
+}
+
+.profile-picture img {
+    display: block; /* Remove extra space below image */
+    width: 100%;    /* Make image fill the container width */
+    height: 100%;   /* Make image fill the container height */
+    object-fit: cover; /* Scale image to cover, cropping if necessary */
+    object-position: center; /* Center the image within the frame */
+}
+
+/* Optional: Slight scale effect on hover */
+.profile-picture:hover {
+    transform: scale(1.05);
+}
+
+/* Optional: Slightly press down effect when clicked */
+.profile-picture:active {
+    transform: scale(0.98);
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+}
+
+/* --- Chat Messages Area --- */
+.chat-messages-container {
+    flex-grow: 1; /* Takes up available vertical space */
+    overflow-y: hidden;
+    display: flex; /* To center the messages column */
+    justify-content: center;
+}
+
+.chat-messages {
+    width: 100%;
+    /* max-width: 800px; */
+    padding: 30px 20px; /* More padding top/bottom */
+    overflow-y: auto; /* Enable scrolling ONLY for messages */
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Space between messages */
+}
+
+
+/* --- Individual Messages --- */
+.message {
+    padding: 12px 18px;
+    border-radius: 20px;
+    max-width: 85%; /* Slightly wider max width */
+    line-height: 1.6;
+    word-wrap: break-word;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+    opacity: 0; /* Start hidden for animation */
+    transform: translateY(10px); /* Start slightly lower for animation */
+    animation: fadeInSlideUp 0.4s ease-out forwards; /* Apply animation */
+}
+
+/* Specific styling for initial message if needed */
+.initial-greeting {
+    /* --- Centering Logic --- */
+    flex-grow: 1;         /* Allow it to take available vertical space */
+    display: flex;        /* Use flex to center the inner span */
+    flex-direction: column;
+    align-items: center;  /* Vertical centering */
+    justify-content: center; /* Horizontal centering */
+    
+    
+    /* --- Appearance --- */
+    align-self: center; /* Keep centered horizontally too */
+    background-color: transparent;
+    box-shadow: none;
+    text-align: center;
+    font-size: 2em; /* Make it larger */
+    color: #555;
+    margin-bottom: 0; /* Remove bottom margin */
+    padding: 20px; /* Add some padding */
+    /* --- Initial Animation (Fade In) --- */
+    animation: fadeIn 1s ease forwards;
+    opacity: 0; /* Start hidden */
+    /* --- Ensure it doesn't slide up like other messages --- */
+    
+    transform: none;
+    /* --- Smooth disappearance --- */
+    transition: opacity 0.3s ease-out, height 0.3s ease-out, padding 0.3s ease-out, margin 0.3s ease-out;
+    overflow: hidden; /* Needed for height transition */
+}
+
+/* Add a class for when it should hide */
+.message.initial-greeting.hidden {
+    opacity: 0;
+    height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-bottom: 0; /* Ensure no space is left */
+    flex-grow: 0; /* Stop taking space */
+     /* Need to override the fade-in animation */
+    animation: none;
+}
+
+
+.message.initial-greeting span {
+    font-weight: 700; /* Make it bold */
+    font-size: 2.5rem;
+    /* --- Animated Gradient --- */
+    background: linear-gradient(
+        90deg, /* Gradient direction */
+        #2e7d32,    /* Dark Green */
+        #9C27B0, /* Vibrant Purple */
+        #E040FB, /* Bright Fuchsia/Pink */
+        #FF7F50, /* Coral Orange */
+        #FFEB3B, /* Bright Yellow */
+        #4DD0E1, /* Cyan/Light Blue */
+        #42A5F5, /* Medium Blue */
+        #673AB7, /* Deep Purple */
+        #9C27B0, /* Vibrant Purple */
+        #E040FB, /* Bright Fuchsia/Pink */
+        #FF7F50, /* Coral Orange */
+        #FFEB3B, /* Bright Yellow */
+        #4DD0E1, /* Cyan/Light Blue */
+        #42A5F5, /* Medium Blue */
+        #673AB7,  /* Deep Purple */
+        #2e7d32     /* Dark Green */
+    );
+    background-size: 2500% 1000%; /* Make background wider for animation */
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: animatedGradient 30s linear infinite alternate; /* Apply animation */
+}
+
+/* --- Gradient Animation Keyframes --- */
+/* @keyframes animatedGradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+} */
+
+@keyframes animatedGradient {
+    0% { background-position: 0%; }
+    50% { background-position: 50%; }
+    100% { background-position: 100%; }
+}
+
+/* --- Other styles remain the same --- */
+
+/* --- Message Sending Animation --- */
+@keyframes fadeInSlideUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
+}
+
+
+.message.user {
+    background-color: #a5d6a7; /* Light Green */
+    color: #1b5e20; /* Darker green text */
+    align-self: flex-end; /* Align user messages to the right */
+    border-bottom-right-radius: 6px;
+}
+
+.message.bot {
+    background-color: #e8f5e9; /* Very Light Green/Almost White */
+    color: #333;
+    align-self: flex-start; /* Align bot messages to the left */
+    border-bottom-left-radius: 6px;
+}
+
+.message.loading {
+    background-color: #e8f5e9;
+    color: #888;
+    align-self: flex-start;
+    font-style: italic;
+    border-bottom-left-radius: 6px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    animation: none; /* No slide up for loading dots initially */
+    opacity: 1;
+    transform: none;
+}
+
+.message.error {
+    background-color: #ffebee; /* Light red */
+    color: #c62828; /* Darker red */
+    align-self: flex-start;
+    font-weight: bold;
+    border-bottom-left-radius: 6px;
+}
+
+/* --- Message Sending Animation --- */
+@keyframes fadeInSlideUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
+}
+
+
+/* --- Loading Dots (Improved) --- */
+.message.loading::after {
+    content: '';
+    display: inline-block;
+    width: 5px;
+    height: 5px;
+    background-color: #888;
+    border-radius: 50%;
+    animation: loadingDots 1.4s infinite ease-in-out both;
+    animation-delay: 0s;
+    margin-left: 5px; /* Space before dots */
+}
+.message.loading::before { /* Add two more dots using pseudo-elements */
+    content: '';
+    display: inline-block;
+    width: 5px;
+    height: 5px;
+    background-color: #888;
+    border-radius: 50%;
+    animation: loadingDots 1.4s infinite ease-in-out both;
+    animation-delay: 0.2s; /* Stagger animation */
+    margin-left: 5px;
+}
+.loading-dot-placeholder { /* Third dot */
+    display: inline-block;
+    width: 5px;
+    height: 5px;
+    background-color: #888;
+    border-radius: 50%;
+    animation: loadingDots 1.4s infinite ease-in-out both;
+    animation-delay: 0.4s; /* Stagger animation */
+    margin-left: 2px; /* Fine-tune spacing */
+}
+
+@keyframes loadingDots {
+  0%, 80%, 100% { transform: scale(0); }
+  40% { transform: scale(1.0); }
+}
+
+
+/* --- Chat Input Area --- */
+.chat-input-area {
+    padding: 15px 0 10px 0; /* Adjust padding */
+    /* background-color: #f0f4f9;  */
+    flex-shrink: 0; /* Prevent input area from shrinking */
+    /* border-top: 1px solid #e0e0e0; */
+}
+
+.input-wrapper {
+    width: 100%;
+    /* max-width: 800px;  */
+    margin: 0 auto; /* Center the input area content */
+    padding: 0 20px; /* Side padding within the centered wrapper */
+}
+
+.chat-form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #ffffff; /* White background for the input field container */
+    border-radius: 25px; /* Rounded corners for the whole input group */
+    padding: 5px 5px 5px 15px; /* Padding around input and button */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.305);
+    margin-bottom: 8px; /* Space before disclaimer */
+}
+
+#prompt {
+    flex-grow: 1;
+    border: none; /* Remove default border */
+    outline: none; /* Remove default outline */
+    font-size: 1rem;
+    padding: 10px 5px; /* Adjust padding */
+    background: transparent; /* Make input background transparent */
+}
+
+#send-button {
+    background-color: #4CAF50; /* Green */
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px; /* Slightly smaller */
+    height: 40px;
+    font-size: 1.1em;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+}
+#send-button:disabled {
+    background-color: #a5d6a7; /* Lighter green when disabled */
+    cursor: not-allowed;
+}
+
+#send-button:not(:disabled):hover {
+    background-color: #388e3c; /* Darker Green */
+}
+
+#send-button:not(:disabled):active {
+    background-color: #2e7d32; /* Even Darker Green */
+    transform: scale(0.95);
+}
+
+.disclaimer {
+    font-size: 0.7rem;
+    color: #777;
+    text-align: center;
+    padding: 0 10px;
+}
+
+/* --- Scrollbar Styling (Optional, Webkit specific) --- */
+.chat-messages::-webkit-scrollbar {
+    width: 3px;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+    background: transparent; /* Make track invisible */
+    border-radius: 10px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+    background: #c5e1a5; /* Lighter green scrollbar */
+    border-radius: 10px;
+    border: 2px solid #ffffff; /* Add border to match message area background */
+}
+
+.chat-messages::-webkit-scrollbar-thumb:hover {
+    background: #aed581;
+}
+
+.message.bot.loading-state .loading-text {
+    font-style: italic;
+    color: #666;
+    /* Add optional subtle animation */
+    animation: blink 1.5s infinite ease-in-out;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+}
+
+/* Ensure the error class removes loading if applied */
+.message.error .loading-text {
+    display: none;
+}
+
+.message.bot > *:first-child {
+    margin-top: 0; /* Remove extra top margin from the first element */
+}
+.message.bot > *:last-child {
+    margin-bottom: 0; /* Remove extra bottom margin from the last element */
+}
+
+/* Paragraph Styling */
+.message.bot p {
+    margin-bottom: 0.8em; /* Space between paragraphs */
+    line-height: 1.6; /* Ensure consistent line height */
+}
+
+/* List Styling (Unordered & Ordered) */
+.message.bot ul,
+.message.bot ol {
+    margin-top: 0.5em;  /* Space above lists */
+    margin-bottom: 1em;   /* Space below lists */
+    padding-left: 25px; /* Indentation for list items */
+}
+
+.message.bot li {
+    margin-bottom: 0.4em; /* Space between list items */
+    line-height: 1.6;
+}
+
+/* Nested List Styling */
+.message.bot ul ul,
+.message.bot ol ol,
+.message.bot ul ol,
+.message.bot ol ul {
+    margin-top: 0.3em;
+    margin-bottom: 0.5em;
+    padding-left: 20px; /* Further indent nested lists */
+}
+
+/* Use different bullet styles for nested unordered lists */
+.message.bot ul {
+    list-style-type: disc; /* Default bullet */
+}
+.message.bot ul ul {
+    list-style-type: circle; /* Nested level 1 */
+}
+.message.bot ul ul ul {
+    list-style-type: square; /* Nested level 2 */
+}
+
+/* Text Formatting */
+.message.bot strong {
+    font-weight: 600; /* Slightly bolder than default potentially */
+    color: #1b5e20; /* Use a darker green for emphasis within the bot bubble */
+}
+
+.message.bot em {
+    font-style: italic;
+}
+
+/* Code Blocks */
+.message.bot pre {
+    background-color: #f5f5f5; /* Light grey background */
+    border: 1px solid #e0e0e0; /* Subtle border */
+    border-radius: 4px;
+    padding: 1em;
+    margin-top: 0.5em;
+    margin-bottom: 1em;
+    overflow-x: auto; /* Allow horizontal scrolling for long lines */
+    white-space: pre-wrap; /* Wrap long lines but preserve formatting */
+    word-wrap: break-word; /* Break long words if necessary */
+    font-size: 0.9em; /* Slightly smaller font */
+}
+
+.message.bot pre code {
+    background-color: transparent; /* Code inside pre shouldn't have its own bg */
+    padding: 0;
+    border-radius: 0;
+    font-family: 'Courier New', Courier, monospace; /* Monospace font */
+    color: #333;
+}
+
+/* Inline Code */
+.message.bot code {
+    background-color: #e8f5e9; /* Very light green matching bubble slightly */
+    border-radius: 3px;
+    padding: 0.2em 0.4em;
+    font-size: 0.9em;
+    font-family: 'Courier New', Courier, monospace;
+    color: #388e3c; /* Darker green text for inline code */
+}
+
+/* Blockquotes */
+.message.bot blockquote {
+    border-left: 4px solid #a5d6a7; /* Green border matching user bubble */
+    margin: 1em 0;
+    padding: 0.5em 1em;
+    color: #555; /* Slightly muted text color */
+    background-color: #f9fbe7; /* Very subtle yellow/green tint */
+}
+.message.bot blockquote p {
+    margin-bottom: 0.5em; /* Reduce paragraph spacing within quotes */
+}
+
+/* Headings (Optional - Markdown might generate these) */
+.message.bot h1, .message.bot h2, .message.bot h3, .message.bot h4, .message.bot h5, .message.bot h6 {
+    margin-top: 1.2em;
+    margin-bottom: 0.6em;
+    font-weight: 600;
+    color: #1b5e20; /* Dark green headings */
+    line-height: 1.3;
+}
+
+.message.bot h1 { font-size: 1.6em; }
+.message.bot h2 { font-size: 1.4em; }
+.message.bot h3 { font-size: 1.2em; }
+.message.bot h4 { font-size: 1.1em; }
+.message.bot h5 { font-size: 1.0em; }
+.message.bot h6 { font-size: 0.9em; color: #4caf50; } /* Lighter green for h6 */
+
+/* Horizontal Rules */
+.message.bot hr {
+    border: none;
+    border-top: 1px solid #c5e1a5; /* Light green line */
+    margin: 1.5em 0;
+}
+
+/* Links */
+.message.bot a {
+    color: #388e3c; /* Dark green for links */
+    text-decoration: underline;
+    transition: color 0.2s ease;
+}
+
+.message.bot a:hover {
+    color: #1b5e20; /* Even darker green on hover */
+    text-decoration: none;
+}
+
+/* Images (If Markdown includes them) */
+.message.bot img {
+    max-width: 100%; /* Ensure images don't overflow the bubble */
+    height: auto;
+    border-radius: 4px; /* Slightly rounded corners for images */
+    margin-top: 0.5em;
+    margin-bottom: 1em;
+}

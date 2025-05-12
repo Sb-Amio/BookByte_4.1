@@ -1,0 +1,72 @@
+{% extends 'main_user.html' %}
+{% load static %} 
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/home_user.css' %}">    
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+<div class="container py-4">
+    <!-- <h2>Recommended Books</h2> -->
+    <div class="row">
+        {% for book in recommended_books %}
+        <div class="col-md-3 mb-4">
+            <div class="card h-100 shadow-sm rounded-4">
+                {% if book.image %}
+                <img src="{{ book.image.url }}" class="card-img-top rounded-top" style="height: 200px; object-fit: contain;" alt="{{ book.title }}">
+                {% endif %}
+                <div class="card-body">
+                    <h6 class="card-title fw-semibold">{{ book.title }}</h6>
+                    <p class="card-text">Price: {{ book.price }} Taka</p>
+                    {% if book.quantity == 0 %}
+                        <p class="card-text fw-bold text-danger">Stock Out!</p>
+                    {% endif %}
+                </div>
+                <div class="card-footer bg-white border-top-0">
+                    <div class="d-flex justify-content-between gap-2">
+                        <a href="{% url 'book_details_user' book.id %}" class="btn btn-outline-info btn-sm rounded-pill w-100">
+                            <i class="fas fa-info-circle me-1"></i> Details
+                        </a>
+                        {% if book.quantity != 0 %}
+                        <a href="{% url 'add_to_cart_book' book.id %}" class="btn btn-outline-success btn-sm rounded-pill w-100">
+                            <i class="fas fa-cart-plus me-1"></i> Add to Cart
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- <h2>Recommended Accessories</h2> -->
+    <div class="row">
+        {% for accessory in recommended_accessories %}
+        <div class="col-md-3 mb-4">
+            <div class="card h-100 shadow-sm rounded-4">
+                {% if accessory.image %}
+                <img src="{{ accessory.image.url }}" class="card-img-top rounded-top" style="height: 200px; object-fit: contain;" alt="{{ accessory.title }}">
+                {% endif %}
+                <div class="card-body">
+                    <h6 class="card-title fw-semibold">{{ accessory.title }}</h6>
+                    <p class="card-text">Price: {{ accessory.price }} Taka</p>
+                    {% if accessory.quantity == 0 %}
+                        <p class="card-text fw-bold text-danger">Stock Out!</p>
+                    {% endif %}
+                </div>
+                <div class="card-footer bg-white border-top-0">
+                    <div class="d-flex justify-content-between gap-2">
+                        <a href="{% url 'accessories_details_user' accessory.id %}" class="btn btn-outline-info btn-sm rounded-pill w-100">
+                            <i class="fas fa-info-circle me-1"></i> Details
+                        </a>
+                        {% if accessory.quantity != 0 %}
+                        <a href="{% url 'add_to_cart_accessories' accessory.id %}" class="btn btn-outline-success btn-sm rounded-pill w-100">
+                            <i class="fas fa-cart-plus me-1"></i> Add to Cart
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

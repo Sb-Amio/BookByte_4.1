@@ -1,0 +1,124 @@
+
+footer {
+    background-color: #DDE1E3;
+    padding: 50px 0 100px; /* Increased bottom padding for wave */
+    margin-top: 20px;
+    font-family: Arial, sans-serif;
+    position: relative;
+    overflow: hidden; /* Hide overflow for the wave animation */
+    border-top-left-radius: 30px; /* Rounded corners for top */
+    border-top-right-radius: 30px;
+    box-shadow: 0px -10px 20px rgba(0, 0, 0, 0.1); /* Add shadow for depth */
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+.footer-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.social-icons {
+    margin-bottom: 30px;
+}
+
+.social-icons a {
+    color: black ;
+    text-decoration: none;
+    margin-right: 20px;
+    transition: color 0.3s ease;
+    border-radius: 50%;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    background-color: #fff;
+    box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.1);
+}
+
+.social-icons a:hover {
+    color: #0056b3;
+    box-shadow: 0px 5px 20px rgba(0, 123, 255, 0.3);
+}
+
+.footer-text {
+    font-size: 16px;
+    color: #6c757d;
+    margin-bottom: 15px;
+}
+
+.copyright {
+    font-size: 14px;
+    color: #6c757d;
+    margin-top: 30px;
+}
+
+/* Custom Styling */
+footer:before {
+    content: "";
+    position: absolute;
+    top: -3px;
+    left: 0;
+    width: 100%;
+    height: 6px; /* Increased height for better visibility */
+    background-color: black;
+    border-radius: 3px 3px 0 0;
+    animation: waveAnimation 2s linear infinite alternate; /* Adjust animation duration and timing */
+}
+
+footer .social-icons a i {
+    font-size: 24px;
+}
+
+footer .footer-text {
+    margin-bottom: 10px;
+}
+
+/* Decorative Elements */
+.decorative-line {
+    width: 100%;
+    height: 1px;
+    background-color: #dcdcdc;
+    margin: 20px 0;
+}
+
+.pattern-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="50" height="50" fill="#f0f0f0"/><rect x="50" y="50" width="50" height="50" fill="#f0f0f0"/><rect width="50" height="50" fill="#ffffff"/><rect x="50" y="50" width="50" height="50" fill="#ffffff"/></svg>');
+    opacity: 0.1;
+    pointer-events: none; /* Prevent interaction with the pattern */
+}
+
+/* Scroll to Top Button */
+.scroll-to-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: black;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 24px;
+    line-height: 40px;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    z-index: 999;
+}
+
+.scroll-to-top:hover {
+    background-color: #0056b3;
+}

@@ -1,0 +1,31 @@
+{% extends 'main_non.html' %}
+{% load static %} 
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/home_non.css' %}">    
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+<div class="container py-4">
+    <div class="row">
+        {% for p in accessories_ins %}
+        <div class="col-md-3 mb-4">
+            <div class="card h-100 shadow-sm rounded-4">
+                {% if p.image %}
+                <img src="{{ p.image.url }}" class="card-img-top rounded-top" style="height: 200px; object-fit: contain;" alt="{{ p.title }}">
+                {% endif %}
+                <div class="card-body">
+                    <h6 class="card-title fw-semibold">{{ p.title }}</h6>
+                    <p class="card-text">Price: {{ p.price }} Taka</p>
+                </div>
+                <div class="card-footer bg-white border-top-0">
+                    <div class="d-flex justify-content-between gap-2">
+                        <a href="{% url 'accessories_details_non' p.id %}" class="btn btn-outline-info btn-sm rounded-pill w-100">
+                            <i class="fas fa-info-circle me-1"></i> Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

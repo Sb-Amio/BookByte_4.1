@@ -1,0 +1,55 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Search Results</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/search_results_non.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h2>Search Results for "<span style="color:#007bff">{{ query }}</span>"</h2>
+
+        {% if search_results %}
+            <ul>
+                {% for item in search_results %}
+                    <li>
+                        {% if item.item_type|lower == 'home' %}
+                            <img src="{{ item.image.url }}" alt="{{ item.title }}" class="book-image"><br>
+                        {% endif %}
+
+                        <strong>Title:</strong> {{ item.title }}<br>
+                        {% if item.item_type|lower != 'accessories_user' %}
+                            <strong>Author:</strong> {{ item.author }}<br>
+                        {% endif %}
+
+                        {% if item.item_type|lower == 'home' %}
+                            <a href="{% url 'book_details_user' item.id %}" class="view-details-link">
+                                <i class="fas fa-eye"></i> View Details
+                            </a>
+                        {% elif item.item_type|lower == 'ebook_user' %}
+                            <a href="{% url 'ebook_details_user' item.id %}" class="view-details-link">
+                                <i class="fas fa-eye"></i> View Details
+                            </a>
+                        {% elif item.item_type|lower == 'accessories_user' %}
+                            <a href="{% url 'accessories_details_user' item.id %}" class="view-details-link">
+                                <i class="fas fa-eye"></i> View Details
+                            </a>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p style="text-align: center; font-size: 18px; color: #555;">No results found for "<strong>{{ query }}</strong>"</p>
+        {% endif %}
+
+        <div class="text-center">
+            <a href="javascript:history.back()" class="btn btn-outline-primary">
+                <i class="fas fa-arrow-left"></i> Go Back
+            </a>
+        </div>
+    </div>
+</body>
+</html>

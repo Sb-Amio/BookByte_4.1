@@ -1,0 +1,63 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Third-(i)</title>
+    <link rel="stylesheet" href="{% static 'css/gemini.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+</head>
+<body>
+
+    <div class="page-container">
+
+        <!-- Top Navigation -->
+        <div class="top-nav">
+            <button class="back-button" id="back-button" title="Go Back">
+                <i class="fas fa-arrow-left"></i>
+                <span class="back-text">Back</span>
+            </button>
+        </div>
+
+        <!-- Chat Messages Area -->
+        <div class="chat-area">
+            <div class="chat-header">
+                <h1 style="text-align: center;padding-top: 50px;">Hello, {{ user }} 👋</h1>
+                <!-- <p class="subtext">Tell us what makes a book perfect for you!</p> -->
+            </div>
+
+            <div class="chat-messages" id="chat-messages">
+                <div class="message bot-message">
+                    <p>How Can I Assist You!</p>
+                </div>
+                <!-- Future chat messages will dynamically appear here -->
+            </div>
+        </div>
+
+        <!-- Chat Input Footer -->
+        <div class="chat-input-footer">
+            <form id="chat-form" class="chat-form">
+                <div class="input-wrapper">
+                    <input type="text" id="prompt" name="prompt" placeholder="Start typing your preferences..." required autocomplete="off">
+                    <button type="submit" id="send-button" aria-label="Send Message">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </form>
+            <p class="input-hint">✍️ The more details you share, the better suggestions you'll get!</p>
+        </div>
+
+    </div>
+
+    <!-- JavaScript -->
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@google/generative-ai/+esm"></script>
+    <script src="{% static 'css/marked.min.js' %}"></script>
+    <script type="module" src="{% static 'css/gemini2.js' %}"></script>
+    <script src="{% static 'css/highlight.min.js' %}"></script>
+    <script src="{% static 'css/scripts.js' %}"></script>
+
+</body>
+</html>

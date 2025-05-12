@@ -1,0 +1,56 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/ordered_items.css' %}">
+<h2 style="text-align:center;">Ordered Items</h2>
+<table>
+    <tr>
+        <th>Ordered By</th>
+        <th>Image</th>
+        <th>Name</th>
+        <th>Quantity</th>
+        <th>Status</th>
+        <th>Total Price</th>
+        <th>Date Ordered</th>
+        <th>Action</th>
+    </tr>
+    {% for order in orders %}
+        <tr class="{{ order.status }}">
+            <td>{{ order.user.username }}</td>
+            <td>
+                {% if order.book %}
+                    <img src="{{ order.book.image.url }}" class="img-thumbnail mb-1" width="60" height="60"><br>
+                {% elif order.ebook %}
+                    <img src="{{ order.ebook.image.url }}" class="img-thumbnail mb-1" width="60" height="60"><br>
+                {% elif order.accessories %}
+                    <img src="{{ order.accessories.image.url }}" class="img-thumbnail mb-1" width="60" height="60"><br>
+                {% endif %}
+            </td>
+            <td>
+                {% if order.book %}
+                    {{ order.book.title }}
+                {% elif order.ebook %}
+                    {{ order.ebook.title }}
+                {% elif order.accessories %}
+                    {{ order.accessories.title }}
+                {% endif %}
+            </td>
+            <td>{{ order.quantity }}</td>
+            <td>{{ order.get_status_display }}</td>
+            <td>{{ order.price }}</td>
+            <td>{{ order.date_time|date:"Y-m-d H:i" }}</td>
+            <td>
+                <form method="post" action="{% url 'update_order_status' order.id %}" class="update-form">
+                    {% csrf_token %}
+                    <select name="status" onchange="this.form.submit()">
+                        <option value="pending" {% if order.status == 'pending' %}selected{% endif %}>Pending</option>
+                        <option value="delivered" {% if order.status == 'delivered' %}selected{% endif %}>Delivered</option>
+                    </select>
+                </form>
+            </td>
+        </tr>
+    {% empty %}
+        <tr><td colspan="7">No orders found.</td></tr>
+    {% endfor %}
+</table>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends 'main_user.html' %}
+{% load static %}
+{% block content %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/book_details_user.css' %}">
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10 col-md-12">
+            <div class="card book-details-card shadow rounded-4 border-0 p-4">
+                <div class="row g-4 align-items-center">
+                    <!-- Book Image -->
+                    <div class="col-md-5 text-center">
+                        {% if accessories_ins.image %}
+                        <img src="{{ accessories_ins.image.url }}" class="img-fluid rounded-4 book-img" alt="{{ accessories_ins.title }}">
+                        {% endif %}
+                    </div>
+
+                    <!-- Book Info -->
+                    <div class="col-md-7">
+                        <div class="card-body">
+                            <h2 class="card-title fw-bold mb-3">{{ accessories_ins.title }}</h2>
+                            <p class="text-muted mb-4">{{ accessories_ins.description }}</p>
+                            <ul class="list-group list-group-flush mb-4">
+                                <li class="list-group-item"><strong>Quantity Remaining:</strong> {{ accessories_ins.quantity }} pcs</li>
+                                <li class="list-group-item"><strong>Price:</strong> {{ accessories_ins.price }} Taka</li>
+                                <li class="list-group-item"><strong>Review:</strong> {{ average_review }}</li>
+                                {% if accessories_ins.quantity == 0 %}
+                                <li class="list-group-item text-danger fw-bold">Stock Out!</li>
+                                {% endif %}
+                            </ul>
+
+                            <!-- Buttons -->
+                            <div class="d-flex flex-wrap gap-2 mt-3">
+                                {% if products.quantity != 0 %}
+                                <a href="{% url 'add_to_cart_accessories' accessories_ins.id %}" class="btn custom-btn-success">
+                                    <i class="fas fa-cart-plus me-2"></i> Add to Cart
+                                </a>
+                                {% endif %}
+                                <a href="javascript:history.back()" class="btn custom-btn-primary">
+                                    <i class="fas fa-arrow-left me-2"></i> Go Back
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div> <!-- row -->
+            </div> <!-- card -->
+        </div>
+    </div>
+</div>
+{% endblock %}

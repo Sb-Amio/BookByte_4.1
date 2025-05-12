@@ -1,0 +1,69 @@
+.btn {
+    font-size: 14px;
+    font-weight: 500;
+    padding: 6px 12px;
+    transition: 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 48%; /* Make sure the buttons don't exceed the card */
+}
+
+.card-footer .d-flex {
+    flex-wrap: wrap; /* Allow buttons to wrap if necessary */
+}
+
+.card-footer .btn {
+    margin-bottom: 8px; /* Space between the buttons */
+    width: 48%; /* Prevent buttons from exceeding the card width */
+}
+
+.card-footer .d-flex .btn:first-child {
+    margin-right: 4%; /* Add space between the first and second buttons */
+}
+
+.btn-outline-info {
+    border-color: #0dcaf0;
+    color: #0dcaf0;
+    background-color: white;
+}
+
+.btn-outline-info:hover {
+    background-color: #0dcaf0;
+    color: white;
+}
+
+.btn-outline-success {
+    border-color: #198754;
+    color: #198754;
+    background-color: white;
+}
+
+.btn-outline-success:hover {
+    background-color: #198754;
+    color: white;
+}
+
+/* Extra polish */
+.card-footer .btn {
+    border-radius: 50px !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+/* Ensure spacing between icons and text is nice */
+.btn i {
+    margin-right: 5px;
+}
+
+@media (max-width: 767px) {
+    .card-footer .d-flex {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .card-footer .btn {
+        width: 100%; /* Full width buttons on smaller screens */
+        margin-right: 0;
+    }
+}

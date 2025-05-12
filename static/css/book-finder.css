@@ -1,0 +1,413 @@
+
+/* --- Main Page Layout --- */
+.page-container {
+    width: 100%;
+    flex-grow: 1; /* Allows container to fill space */
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffff; /* White main area background */
+    position: relative; /* For positioning back button/profile */
+}
+
+/* --- Optional: Keep Back Button & Profile Styles if used --- */
+.back-button {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    background-color: #f1f1f1;
+    color: #333;
+    border: none;
+    border-radius: 25px;
+    padding: 8px 12px;
+    cursor: pointer;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 35px;
+    transition: width 0.15s ease-in-out, background-color 0.15s ease;
+}
+.back-button i { font-size: 1em; line-height: 1; }
+.back-button .back-text { display: inline-block; margin-left: 8px; font-weight: 500; opacity: 0; transition: opacity 0.1s ease-in-out 0.1s; }
+.back-button:hover { background-color: #e0e0e0; width: 70px; }
+.back-button:hover .back-text { opacity: 1; }
+.back-button:active { background-color: #d5d5d5; }
+
+.profile-picture {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    z-index: 10;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: #e0e0e0;
+    cursor: pointer;
+    border: 2px solid #ffffff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+    transition: transform 0.2s ease;
+}
+.profile-picture img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center; }
+.profile-picture:hover { transform: scale(1.05); }
+.profile-picture:active { transform: scale(0.98); box-shadow: 0 0 2px rgba(0, 0, 0, 0.1); }
+/* --- End Optional Styles --- */
+
+
+/* --- Book Finder Specific Styles --- */
+
+/* Helper class to visually hide elements but keep them accessible */
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+
+.book-finder-main-content {
+    width: 100%;
+    max-width: 1200px; /* Adjust max-width as needed */
+    margin: 20px auto; /* Center and add some top/bottom margin */
+    padding: 20px 40px; /* Add more side padding */
+    flex-grow: 1; /* Allow it to grow vertically */
+    display: flex;
+    flex-direction: column;
+}
+
+.finder-title {
+    text-align: center;
+    font-size: 2.2em; /* Slightly larger title */
+    margin-bottom: 10px;
+    color: #2c3e50; /* Darker blue-grey */
+    font-weight: 600;
+}
+
+.finder-instructions {
+    text-align: center;
+    font-size: 1.1em;
+    color: #555;
+    margin-bottom: 40px; /* More space below instructions */
+}
+
+/* Two-column Layout */
+.book-finder-split-container {
+    display: flex;
+    gap: 40px; /* Increased space between columns */
+    flex-grow: 1; /* Allow columns container to fill available height */
+    width: 100%;
+    align-items: stretch; /* Make columns equal height by default */
+}
+
+.finder-controls-column {
+    flex: 0 0 45%; /* Fixed width for controls column */
+    display: flex;
+    flex-direction: column; /* Stack elements vertically */
+    gap: 25px; /* Increased space between capture area and find button */
+}
+
+.finder-results-column {
+    flex: 1 1 55%; /* Results column takes remaining space */
+    display: flex;
+    flex-direction: column; /* Stack elements vertically (useful if adding titles later) */
+}
+
+/* Controls Area Styling */
+.image-capture-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    padding: 25px;
+    border-radius: 12px; /* More rounded corners */
+    background-color: #f8f9fa; /* Slightly off-white background */
+    border: 1px solid #dee2e6; /* Light grey border */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.06); /* Subtle shadow */
+    flex-grow: 1; /* Allow capture area to take vertical space */
+}
+
+.capture-buttons {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+}
+
+/* Refined Button Styles */
+.finder-button {
+    background-color: #ffffff; /* Default background */
+    color: #343a40; /* Dark grey text */
+    border: 1px solid #ced4da; /* Grey border */
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.1s ease;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+.finder-button i {
+    font-size: 1.1em;
+    margin-right: 3px;
+}
+.finder-button:hover {
+    border-color: #adb5bd;
+    background-color: #f8f9fa; /* Slight hover background */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.finder-button:active {
+    transform: translateY(1px);
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* Primary Action Buttons (Green) */
+.finder-button.primary {
+    background-color: #28a745; /* Bootstrap green */
+    color: white;
+    border-color: #28a745;
+}
+.finder-button.primary:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+    color: white;
+}
+.finder-button.primary:disabled {
+    background-color: #a5d6a7;
+    border-color: #a5d6a7;
+    color: rgba(255, 255, 255, 0.9);
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+    opacity: 0.65;
+}
+.finder-button.primary:disabled:hover { /* Prevent hover styles when disabled */
+     background-color: #a5d6a7;
+     border-color: #a5d6a7;
+}
+
+
+/* Secondary Action Buttons (Blue for Upload) */
+.finder-button.secondary {
+    background-color: #007bff; /* Bootstrap blue */
+    color: white;
+    border-color: #007bff;
+}
+.finder-button.secondary:hover {
+    background-color: #0069d9;
+    border-color: #0062cc;
+    color: white;
+}
+
+/* Larger Find Button */
+.finder-button.large {
+    padding: 12px 25px;
+    font-size: 1.1rem;
+    width: 100%;
+    /* margin-top: auto; REMOVED - Let the capture area push it down */
+}
+
+/* Video & Image Preview */
+.video-preview {
+    display: none;
+    width: 100%; /* Take full width of container */
+    max-width: 100%; /* Allow video to use full width */
+    height: auto;
+    border-radius: 8px; /* Match container */
+    background-color: #e9ecef; /* Placeholder background */
+    border: 1px solid #ced4da;
+}
+
+.image-display-area {
+    width: 100%;
+    flex-grow: 1; /* Allow this area to grow vertically */
+    min-height: 350px; /* Increased minimum height */
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffffff;
+    overflow: hidden;
+    position: relative;
+}
+
+.image-display-area img {
+    display: none;
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: 5px;
+}
+.image-display-area .placeholder-text {
+    color: #6c757d; /* Bootstrap secondary text color */
+    font-size: 1em;
+    text-align: center;
+    padding: 20px;
+}
+
+/* Results Area */
+.result-display-area {
+    width: 100%;
+    max-height: 80vh; /* Fill the column height */
+    flex-grow: 1; /* Needed if parent column is flex */
+    padding: 30px; /* More padding */
+    border-radius: 12px; /* Match capture area */
+    background-color: #ffffff;
+    border: 1px solid #dee2e6;
+    overflow-y: auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.06); /* Match capture area */
+    line-height: 1.7;
+    color: #343a40;
+    font-size: 1rem; /* Slightly larger base font */
+    scrollbar-width: thin;
+    scrollbar-color: #adb5bd #f8f9fa; /* Adjusted scrollbar colors */
+}
+/* Webkit scrollbar styles */
+.result-display-area::-webkit-scrollbar {
+    width: 9px;
+}
+.result-display-area::-webkit-scrollbar-track {
+    background: #f8f9fa;
+    border-radius: 5px;
+}
+.result-display-area::-webkit-scrollbar-thumb {
+    background-color: #adb5bd;
+    border-radius: 5px;
+    border: 2px solid #f8f9fa; /* Creates padding around thumb */
+}
+.result-display-area::-webkit-scrollbar-thumb:hover {
+    background-color: #6c757d;
+}
+
+.result-display-area.loading,
+.result-display-area.error {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-style: italic;
+    color: #6c757d;
+    min-height: 200px; /* Ensure loading/error state has size */
+    font-size: 1.1em;
+}
+.result-display-area.error {
+    background-color: #f8d7da; /* Bootstrap danger light background */
+    border-color: #f5c6cb; /* Bootstrap danger light border */
+    color: #721c24; /* Bootstrap danger dark text */
+    font-weight: 500;
+    font-style: normal;
+}
+
+/* Styles for Markdown content within results */
+.result-display-area > *:first-child { margin-top: 0; } /* Remove top margin on first element */
+.result-display-area h1,
+.result-display-area h2,
+.result-display-area h3,
+.result-display-area h4,
+.result-display-area h5,
+.result-display-area h6 {
+    margin-top: 1.5em;
+    margin-bottom: 0.8em;
+    color: #212529; /* Darker heading */
+    font-weight: 600;
+    line-height: 1.3;
+}
+.result-display-area h1 { font-size: 1.8em; }
+.result-display-area h2 { font-size: 1.5em; }
+.result-display-area h3 { font-size: 1.25em; }
+.result-display-area p { margin-bottom: 1.1em; }
+.result-display-area ul, .result-display-area ol { padding-left: 30px; margin-bottom: 1.1em; }
+.result-display-area li { margin-bottom: 0.6em; }
+.result-display-area pre { background-color: #e9ecef; padding: 1em 1.5em; border-radius: 6px; overflow-x: auto; margin-bottom: 1.2em; border: 1px solid #ced4da; }
+.result-display-area code { font-family: 'SFMono-Regular', Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size: 0.9em; }
+/* Inline code style */
+.result-display-area p code,
+.result-display-area li code,
+.result-display-area h1 code, /* etc. */
+.result-display-area strong code,
+.result-display-area em code {
+    background-color: #e9ecef; /* Match pre background */
+    border-radius: 3px;
+    padding: 0.2em 0.4em;
+    margin: 0 0.1em;
+    color: #495057;
+    border: 1px solid #ced4da;
+}
+.result-display-area pre code { background: none; padding: 0; border: none; } /* Reset for code inside pre */
+.result-display-area a { color: #007bff; text-decoration: none; font-weight: 500; }
+.result-display-area a:hover { text-decoration: underline; color: #0056b3; }
+.result-display-area strong { font-weight: 600; color: #212529; }
+.result-display-area em { font-style: italic; }
+.result-display-area blockquote {
+    border-left: 4px solid #adb5bd;
+    margin: 1.5em 0;
+    padding: 0.8em 1.2em;
+    color: #495057;
+    background-color: #f8f9fa;
+    font-style: italic;
+}
+.result-display-area blockquote p { margin-bottom: 0.5em; }
+.result-display-area hr {
+    border: none;
+    border-top: 1px solid #dee2e6;
+    margin: 2em 0;
+}
+
+
+/* Responsive adjustments */
+@media (max-width: 992px) { /* Adjust breakpoint for tablets */
+    .finder-controls-column { flex-basis: 50%; }
+    .finder-results-column { flex-basis: 50%; }
+    .book-finder-split-container { gap: 25px; }
+    .book-finder-main-content { padding: 20px; }
+}
+
+@media (max-width: 768px) { /* Stacking for smaller devices */
+    .book-finder-split-container {
+        flex-direction: column;
+        gap: 30px;
+        align-items: stretch;
+    }
+     .finder-controls-column,
+     .finder-results-column {
+        flex-basis: auto;
+        width: 100%;
+    }
+     .image-capture-area {
+        flex-grow: 0; /* Prevent excessive growth */
+    }
+    .image-display-area {
+       min-height: 280px; /* Adjust min-height */
+       flex-grow: 0;
+    }
+    .finder-results-column {
+        min-height: 400px; /* Ensure results area has good height */
+        height: auto;
+        flex-grow: 1;
+    }
+    .finder-button.large {
+        margin-top: 20px;
+    }
+     .finder-title { font-size: 1.8em; }
+     .finder-instructions { font-size: 1em; margin-bottom: 30px; }
+     .result-display-area { padding: 20px; }
+}
+
+@media (max-width: 480px) { /* Further adjustments for very small screens */
+     .capture-buttons { flex-direction: column; gap: 10px; }
+     .finder-button { width: 100%; } /* Make all buttons full width */
+     .book-finder-main-content { padding: 15px; }
+     .finder-title { font-size: 1.6em; }
+}

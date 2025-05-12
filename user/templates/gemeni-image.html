@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookByte - Find Book by Image</title>
+    <link rel="stylesheet" href="{% static 'css/gemini.css' %}"> <!-- Base styles -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+    <!-- Add new CSS file reference or inline styles -->
+    <link rel="stylesheet" href="{% static 'css/book-finder.css' %}">
+    <!-- OR embed the new CSS styles below in a <style> tag -->
+
+</head>
+<body>
+
+    <div class="page-container">
+        <!-- Optional: Keep Back button and Profile Picture -->
+        <button class="back-button" id="back-button" title="Go Back">
+            <i class="fas fa-arrow-left"></i>
+            <span class="back-text">Back</span>
+        </button>
+        <!-- <div class="profile-picture" id="profile-picture">
+            <img src="{{ user.profile.image.url }}" alt="User Profile Picture">
+        </div> -->
+
+        <!-- Main Content Area for Book Finder -->
+        <div class="book-finder-main-content">
+
+            <h2 class="finder-title">Learn About the Book</h2>
+            <p class="finder-instructions">Use your camera or upload a photo of a book cover.</p>
+
+            <!-- Split Container for Columns -->
+            <div class="book-finder-split-container">
+
+                <!-- Left Column: Controls -->
+                <div class="finder-controls-column">
+                    <div class="image-capture-area">
+                        <div class="capture-buttons">
+                            <button id="start-camera-button" class="finder-button primary">
+                                <i class="fas fa-camera"></i> Use Camera
+                            </button>
+                            <button id="capture-button" class="finder-button primary" style="display: none;">
+                                <i class="fas fa-circle-dot"></i> Capture Photo
+                            </button>
+
+                            <input type="file" id="file-input" accept="image/*" class="visually-hidden">
+                            <label for="file-input" class="finder-button secondary">
+                                <i class="fas fa-upload"></i> Upload Photo
+                            </label>
+                        </div>
+
+                        <video id="video-feed" playsinline autoplay muted class="video-preview"></video>
+                        <canvas id="capture-canvas" class="visually-hidden"></canvas>
+
+                        <div class="image-display-area" id="image-display-area">
+                            <img id="image-preview" src="#" alt="Captured or uploaded image preview"/>
+                            <span class="placeholder-text" id="preview-placeholder">Preview will appear here</span>
+                        </div>
+                    </div>
+
+                    <button id="find-book-button" class="finder-button primary large" disabled>
+                        <i class="fas fa-book-open-reader"></i> Get Informations
+                    </button>
+                </div>
+
+                <!-- Right Column: Results -->
+                <div class="finder-results-column">
+                    <div class="result-display-area" id="result-output">
+                        <p style="opacity: 0.5;">Results will appear here...</p>
+                    </div>
+                </div>
+
+            </div> <!-- End split-container -->
+
+        </div> <!-- End book-finder-main-content -->
+
+    </div> <!-- End page-container -->
+
+    <!-- Scripts (Keep these the same) -->
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@google/generative-ai/+esm"></script>
+    <script src="{% static 'css/marked.min.js' %}"></script>
+    <script src="{% static 'css/highlight.min.js' %}"></script>
+    <script type="module" src="{% static 'css/gemini-image.js' %}"></script>
+    <script src="{% static 'css/scripts-image.js' %}"></script>
+
+</body>
+</html>

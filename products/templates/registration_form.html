@@ -1,0 +1,61 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="{% static 'css/signup_page.css' %}">
+    <script src="{% static 'css/signup_page.js' %}"></script>
+
+</head>
+<body>
+    <div class="login-container">
+        <h2>Create an Account</h2>
+
+
+        <form id="signup-form" method="POST">
+            {% csrf_token %}
+
+            <!-- Display error messages -->
+            {% if form.errors %}
+                <div class="error-message">
+                    {% for field, error_list in form.errors.items %}
+                        {% for error in error_list %}
+                            {{ error }}<br>
+                        {% endfor %}
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <div class="form-group">
+                <label for="id_username">Username:</label>
+                {{ form.username }}
+            </div>
+            <div class="form-group">
+                <label for="id_email">Email:</label>
+                {{ form.email }}
+            </div>
+            <div class="form-group">
+                <label for="id_password1">Password:</label>
+                {{ form.password1 }}
+                <span class="show-password" onclick="togglePasswordVisibility('id_password1', this)">Show</span>
+            </div>
+            <div class="form-group">
+                <label for="id_password2">Confirm Password:</label>
+                {{ form.password2 }}
+                <span class="show-password" onclick="togglePasswordVisibility('id_password2', this)">Show</span>
+            </div>
+
+            <div id="password-validation" class="validation-message"></div>
+
+            <button type="submit" class="login-btn" style="margin-left: 5px; margin-top: 10px">Register</button>
+        </form>
+        <div class="signup-link">
+            <p>Already have an account? <a href="{% url 'login_user' %}" style="text-decoration: none">Log In</a></p>
+            <p><a href="{% url 'useradmin' %}" style="text-decoration: none">Go to Register Page</a></p>
+        </div>
+    </div>
+
+</body>
+</html>

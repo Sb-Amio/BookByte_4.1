@@ -1,0 +1,89 @@
+{% extends 'main_user.html' %}
+{% load static %}
+{% block content %}
+<div class="container">
+    <h1 class="text-center mb-4">My Orders</h1>
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Order Placed</th>
+                    <th scope="col">Product</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Unit Price</th>
+                    <th scope="col">Total Price</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in order_ins %}
+                <tr>
+                    <td>{{ order.date_time }}</td>
+                    <td>
+                        {% if order.book %}
+                            <img src="{{ order.book.image.url }}" alt="Book Image" class="img-thumbnail mb-1" width="60" height="60"><br>
+                            {{ order.book.title }}
+                        {% elif order.ebook %}
+                            <img src="{{ order.ebook.image.url }}" alt="Ebook Image" class="img-thumbnail mb-1" width="60" height="60"><br>
+                            {{ order.ebook.title }}
+                        {% elif order.accessories %}
+                            <img src="{{ order.accessories.image.url }}" alt="Accessories Image" class="img-thumbnail mb-1" width="60" height="60"><br>
+                            {{ order.accessories.title }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if order.book %}
+                            Book
+                        {% elif order.ebook %}
+                            E-Book
+                        {% elif order.accessories %}
+                            Accessories
+                        {% endif %}
+                    </td>
+                    <td>{{ order.quantity }}</td>
+
+                    <td>{{ order.status }}</td>
+                    <td>
+                        {% if order.book %}
+                            {{ order.book.price }} Taka
+                        {% elif order.ebook %}
+                            {{ order.ebook.price }} Taka
+                        {% elif order.accessories %}
+                            {{ order.accessories.price }} Taka
+                        {% endif %}
+                    </td>
+                    <td>{{ order.price }} Taka</td>
+                    <td>
+                        {% if order.book %}
+                            <a href="{% url 'book_details_user' order.book.id %}" class="btn btn-sm btn-success">Details</a>
+                            {% if order.status == 'delivered' %}
+                                <a href="{% url 'giveReview_Book' order.book.id %}" class="btn btn-sm btn-info">Give Review</a>
+                            {% elif order.status == 'pending' %}
+                                <a href="{% url 'cancel_order' order.id %}" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to cancel this order?')">Cancel</a>
+                            {% endif %}
+                        {% elif order.ebook %}
+                            <a href="{% url 'ebook_details_user' order.ebook.id %}" class="btn btn-sm btn-success">Details</a>
+                            <!-- You can skip review for eBook if not needed -->
+                        {% elif order.accessories %}
+                            <a href="{% url 'accessories_details_user' order.accessories.id %}" class="btn btn-sm btn-success">Details</a>
+                            {% if order.status == 'delivered' %}
+                                <a href="#" class="btn btn-sm btn-info">Give Review</a>
+                            {% elif order.status == 'pending' %}
+                                <a href="{% url 'cancel_order' order.id %}" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to cancel this order?')">Cancel</a>
+                            {% endif %}
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="text-center" style="margin-top: 10px;">
+        <a href="javascript:history.back()" class="btn btn-outline-primary">
+            <i class="fas fa-arrow-left"></i> Go Back
+        </a>
+    </div>
+</div>
+{% endblock %}

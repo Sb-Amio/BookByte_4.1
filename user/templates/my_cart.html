@@ -1,0 +1,76 @@
+{% extends 'main_user.html' %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/cart.css' %}">
+<div class="container mt-5">
+    <h2 class="text-center mb-4">🛒 My Cart</h2>
+    <div class="table-responsive shadow rounded">
+        {% if messages %}
+            <div class="alert alert-danger">
+                {% for message in messages %}
+                    {{ message }}
+                {% endfor %}
+            </div>
+            {% endif %}
+        <table class="table table-striped table-hover align-middle text-center">
+            <thead class="table-dark">
+                <tr>
+                    <th>🕒 Added</th>
+                    <th>📦 Product</th>
+                    <th>📘 Type</th>
+                    <th>🔢 Quantity</th>
+                    <th>💰 Unit Price</th>
+                    <th>🧾 Total</th>
+                    <th>⚙️ Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in cart_items %}
+                <tr>
+                    <td>{{ order.added_at|date:"M d, Y H:i" }}</td>
+                    <td>
+                        {% if order.book %}
+                            <img src="{{ order.book.image.url }}" class="img-thumbnail mb-1" width="60" height="60"><br>
+                            {{ order.book.title }}
+                        {% elif order.ebook %}
+                            <img src="{{ order.ebook.image.url }}" class="img-thumbnail mb-1" width="60" height="60"><br>
+                            {{ order.ebook.title }}
+                        {% elif order.accessories %}
+                            <img src="{{ order.accessories.image.url }}" class="img-thumbnail mb-1" width="60" height="60"><br>
+                            {{ order.accessories.title }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if order.book %} Book {% elif order.ebook %} E-Book {% elif order.accessories %} Accessories {% endif %}
+                    </td>
+                    <td>{{ order.quantity }}</td>
+                    <td>
+                        {% if order.book %} {{ order.book.price }} Tk
+                        {% elif order.ebook %} {{ order.ebook.price }} Tk
+                        {% elif order.accessories %} {{ order.accessories.price }} Tk
+                        {% endif %}
+                    </td>
+                    <td>{{ order.get_item_price }} Tk</td>
+                    <td>
+                        {% if order.book %}
+                            <a href="{% url 'book_details_user' order.book.id %}" class="btn btn-sm btn-outline-primary mb-1">Details</a>
+                            <a href="{% url 'create_order_book' order.book.id %}" class="btn btn-sm btn-success">Order</a>
+                        {% elif order.ebook %}
+                            <a href="{% url 'ebook_details_user' order.ebook.id %}" class="btn btn-sm btn-outline-primary">Details</a>
+                        {% elif order.accessories %}
+                            <a href="{% url 'accessories_details_user' order.accessories.id %}" class="btn btn-sm btn-outline-primary mb-1">Details</a>
+                            <a href="{% url 'create_order_accessories' order.accessories.id %}" class="btn btn-sm btn-success">Order</a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="text-center mt-4">
+        <a href="javascript:history.back()" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left"></i> Back
+        </a>
+    </div>
+</div>
+{% endblock %}

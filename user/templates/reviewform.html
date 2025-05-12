@@ -1,0 +1,18 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/reviewform.css' %}">
+<form method="POST" class="custom-form">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="id_review_choice">Review:</label>
+        {{ form.review_choice }}
+        {% if form.review_choice.errors %}
+            <div class="error">{{ form.review_choice.errors }}</div>
+        {% endif %}
+    </div>
+    <button type="submit" class="btn btn-primary"style="margin-bottom: 50px">Submit</button>
+    <div class="text-center" style="margin-top: 10px;">
+        <a href="javascript:history.back()" class="btn btn-outline-primary">
+            <i class="fas fa-arrow-left"></i> Go Back
+        </a>
+    </div>
+</form>

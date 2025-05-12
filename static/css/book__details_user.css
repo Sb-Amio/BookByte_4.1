@@ -1,0 +1,101 @@
+/* Book Details Card */
+.book-details-card {
+    background: #fff;
+    border: none;
+    border-radius: 20px;
+    padding: 20px;
+    transition: all 0.3s ease-in-out;
+}
+
+.book-details-card:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+/* Book Image */
+.book-img {
+    max-height: 300px;
+    object-fit: contain;
+    border-radius: 20px;
+    padding: 10px;
+    background-color: #f8f9fa;
+}
+
+/* List Group Styling */
+.list-group-item {
+    font-size: 16px;
+    border: none;
+    padding: 10px 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.list-group-item:last-child {
+    border-bottom: none;
+}
+
+.list-group-item strong {
+    color: #333;
+}
+
+/* Custom Buttons */
+.custom-btn-success {
+    background: linear-gradient(135deg, #28a745, #218838);
+    color: white;
+    padding: 10px 20px;
+    font-weight: 600;
+    border: none;
+    border-radius: 50px;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 14px rgba(40, 167, 69, 0.25);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.custom-btn-success:hover {
+    background: linear-gradient(135deg, #218838, #1e7e34);
+    box-shadow: 0 6px 18px rgba(33, 136, 56, 0.3);
+    transform: translateY(-2px);
+}
+
+.custom-btn-primary {
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    color: white;
+    padding: 10px 20px;
+    font-weight: 600;
+    border: none;
+    border-radius: 50px;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 14px rgba(0, 123, 255, 0.25);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.custom-btn-primary:hover {
+    background: linear-gradient(135deg, #0056b3, #004085);
+    box-shadow: 0 6px 18px rgba(0, 86, 179, 0.3);
+    transform: translateY(-2px);
+}
+
+/* FontAwesome Icon Spacing */
+.custom-btn-success i,
+.custom-btn-primary i {
+    margin-right: 8px;
+}
+
+/* Responsive Padding on Container */
+@media (max-width: 767px) {
+    .book-details-card {
+        padding: 15px;
+    }
+
+    .book-img {
+        max-height: 200px;
+    }
+
+    .custom-btn-success,
+    .custom-btn-primary {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}

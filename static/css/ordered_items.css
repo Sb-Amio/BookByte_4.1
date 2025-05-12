@@ -1,0 +1,36 @@
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        font-family: Arial, sans-serif;
+    }
+
+    th, td {
+        padding: 12px;
+        border: 1px solid #ccc;
+        text-align: center;
+    }
+
+    th {
+        background-color: #f5f5f5;
+    }
+
+    tr.pending {
+        background-color: #ffe5e5;
+        color: red;
+    }
+
+    tr.delivered {
+        background-color: #e5e5e5;
+        color: black;
+    }
+
+    select {
+        padding: 5px 10px;
+        border-radius: 4px;
+    }
+
+    .update-form {
+        display: inline;
+    }

@@ -1,0 +1,124 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+<nav class="navbar navbar-expand-lg navbar-dark custom-navbar">
+    <a class="navbar-brand" href="{% url 'main' %}">
+        <img src="{% static 'images/images (1).png' %}" alt="">
+    </a>
+    <div class="welcome-container">
+    </div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent" style="margin-left: 20px">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item{% if request.path == '/main/' %} active{% endif %}">
+                <a class="nav-link" href="{% url 'main' %}">Home</a>
+            </li>
+            <li class="nav-item{% if request.path == '/ebook/' %} active{% endif %}">
+                <a class="nav-link" href="{% url 'ebook' %}">E-Book</a>
+            </li>
+            <li class="nav-item{% if request.path == '/accessories/' %} active{% endif %}">
+                <a class="nav-link" href="{% url 'accessories' %}">Accessories</a>
+            </li>
+            <!-- <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle{% if '/student/' in request.path %} active{% endif %}" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Student
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="#">Academic Books</a>
+                    <a class="dropdown-item" href="#">Admission Books</a>
+                    <a class="dropdown-item" href="#">Accessories</a>
+                </div>
+            </li> -->
+            <li class="nav-item{% if request.path == '/used_book/' %} active{% endif %}">
+                <a class="nav-link" href="{% url 'usedBook' %}">Used Book</a>
+            </li>
+            <li class="nav-item{% if request.path == '/ordered_items/' %} active{% endif %}">
+                <a class="nav-link" href="{% url 'ordered_items' %}">Ordered Items</a>
+            </li>
+        </ul>
+        <li class="nav-item dropdown" style="margin-right: 80px">
+            <a class="btn btn-outline-light{% if '/Profile/' in request.path %} active{% endif %}" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {{ user.username }}'s Profile
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <!-- Parent Dropdown Item -->
+                <div class="dropdown-submenu">
+                    <a class="dropdown-item dropdown-toggle" href="#">Add Items</a>
+                    <div class="dropdown-menu">
+                        <a href="{% url 'upload_book' %}" class="dropdown-item">Upload Book</a>
+                        <a href="{% url 'upload_ebook' %}" class="dropdown-item">Upload Ebook</a>
+                        <a href="{% url 'upload_accessories' %}" class="dropdown-item">Upload Accessories</a>
+                    </div>
+                </div>
+                <a href="#" class="dropdown-item">Default</a>
+                <a href="#" class="dropdown-item">Default</a>
+                <a href="{% url 'logout_user' %}" class="dropdown-item">Log Out</a>
+            </div>
+        </li>
+        <form class="form-inline my-2 my-lg-0" action="{% url 'search' %}" method="GET" style="margin-right: 30px">
+            <input class="form-control mr-sm-2" type="search" name="q" placeholder="Search Items..." aria-label="Search">
+            <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+        </form>
+    </div>
+</nav>
+
+<body>
+<!-- Modal -->
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close">&times;</span>
+            <button id="goBackButton" class="btn btn-secondary btn-sm">Go Back</button>
+        </div>
+        <div class="container">
+            {% if search_results %}
+                <div class="search-results">
+                    <h2>Search Results for "{{ query }}"</h2>
+                    <ul>
+                        {% for book in search_results %}
+                            <!-- Add a link to the book details page 
+                            <li onclick="window.location='{% url 'book_details' book.id %}'">{{ book.title }}</li>-->
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% else %}
+                <div class="search-results">
+                    <p>No results found for "{{ query }}"</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+
+<!-- JavaScript code to handle form submission and display results in the modal -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var modal = document.getElementById("myModal");
+        var searchForm = document.getElementById("searchForm");
+        var searchInput = document.getElementById("searchInput");
+
+        // Show modal and submit form on search button click
+        document.getElementById("searchButton").addEventListener('click', function() {
+            modal.style.display = "block";
+            searchForm.submit();
+        });
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    });
+</script>
+</body>

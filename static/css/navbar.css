@@ -1,0 +1,96 @@
+
+    /* Custom Navbar Styles */
+    .custom-navbar {
+        background-color: #033E3E;
+        border-top: none !important;
+        transition: all 0.3s ease;
+    }
+
+    .custom-navbar.navbar-scrolled {
+        background-color: rgba(3, 62, 62, 0.9);
+    }
+
+    .navbar-brand img {
+        height: 50px;
+        width: 60px;
+        border-radius: 10%;
+        margin-left: 20px;
+        transition: all 0.3s ease;
+    }
+
+    .navbar-brand img:hover {
+        transform: scale(1.1);
+    }
+
+    .navbar-nav .nav-link {
+        transition: all 0.3s ease;
+    }
+
+    .navbar-nav .nav-link:hover {
+        transform: translateY(-3px);
+    }
+
+    .dropdown-menu {
+        transition: all 0.3s ease;
+    }
+
+    .dropdown-menu a:hover {
+        background-color: #007bff !important;
+        color: #fff !important;
+    }
+
+    .form-control {
+        transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+
+    .btn-secondary {
+        transition: all 0.3s ease;
+    }
+
+    .btn-secondary:hover {
+        background-color: #007bff !important;
+        border-color: #007bff !important;
+    }
+
+    /* Style for active nav link */
+    .nav-item.active .nav-link {
+        text-decoration: none;
+    }
+    
+    .dropdown-submenu {
+        position: relative;
+    }
+    
+    .dropdown-submenu .dropdown-menu {
+        top: 0;
+        left: 100%;
+        margin-top: 0;
+        display: none;
+        position: absolute;
+    }
+    
+    .dropdown-submenu:hover .dropdown-menu {
+        display: block;
+    }
+    .dropdown-submenu {
+        position: relative;
+    }
+    
+    .dropdown-submenu .dropdown-menu {
+        top: 0;
+        left: 100%;
+        margin-top: 0;
+        display: none;
+        position: absolute;
+    }
+    
+    .dropdown-submenu:hover .dropdown-menu {
+        display: block;
+    }
+        
+    

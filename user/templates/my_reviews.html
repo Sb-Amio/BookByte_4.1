@@ -1,0 +1,60 @@
+{% extends 'main_user.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container">
+    <h1 class="text-center mb-4">My Reviews</h1>
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover align-middle text-center">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Product</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">My Review</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in review_ins %}
+                <tr>
+                    <td>
+                        {% if p.Book %}
+                            <img src="{{ p.Book.image.url }}" alt="Book Image" class="img-thumbnail mb-1" width="60" height="60"><br>
+                            {{ p.Book.title }}
+                        {% elif p.acc %}
+                            <img src="{{ p.acc.image.url }}" alt="Accessory Image" class="img-thumbnail mb-1" width="60" height="60"><br>
+                            {{ p.acc.title }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if p.Book %} Book
+                        {% elif p.acc %} Accessories
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if p.Book %} {{ p.Book.price }}
+                        {% elif p.acc %} {{ p.acc.price }}
+                        {% endif %}
+                    </td>
+                    <td>{{ p.review_choice }}</td>
+                    <td>
+                        {% if p.Book %}
+                            <a href="{% url 'book_details_user' p.Book.id %}" class="btn btn-sm btn-success">See Details</a>
+                        {% elif p.acc %}
+                            <a href="{% url 'accessories_details_user' p.acc.id %}" class="btn btn-sm btn-success">See Details</a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="text-center mt-3">
+        <a href="javascript:history.back()" class="btn btn-outline-primary">
+            <i class="fas fa-arrow-left"></i> Go Back
+        </a>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,49 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Search Results</title>
+    <link rel="stylesheet" href="{% static 'css/search_results_non.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h2>Search Results for "{{ query }}"</h2>
+        {% if search_results %}
+            <ul>
+                {% for item in search_results %}
+                    <li>
+                        {% if item.item_type|lower == 'book' %}
+                            {% if item.images %}
+                                <img src="{{ item.images.url }}" alt="{{ item.title }}" class="book-image">
+                            {% endif %}
+                            <strong>Title:</strong> {{ item.title }}<br>
+                            <strong>Author:</strong> {{ item.author }}<br>
+                        {% elif item.item_type|lower == 'ebook' %}
+                            <strong>Title:</strong> {{ item.title }}<br>
+                            <strong>Author:</strong> {{ item.author }}<br>
+                        {% elif item.item_type|lower == 'accessories' %}
+                            <strong>Title:</strong> {{ item.title }}<br>
+                        {% endif %}
+                    
+                        {% if item.item_type|lower == 'book' %}
+                            <a href="{% url 'book_details' item.id %}" class="view-details-link">View Details</a>
+                        {% elif item.item_type|lower == 'ebook' %}
+                            <a href="{% url 'ebook_details' item.id %}" class="view-details-link">View Details</a> 
+                        {% elif item.item_type|lower == 'accessories' %}
+                            <a href="{% url 'accessories_details' item.id %}" class="view-details-link">View Details</a> 
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No results found for "{{ query }}"</p>
+        {% endif %}
+        <div class="text-center">
+            <a href="javascript:history.back()" class="btn btn-outline-primary">
+                <i class="fas fa-arrow-left"></i> Go Back
+            </a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,39 @@
+body {
+    background-color: #f8f9fa;
+}
+
+.table {
+    background-color: #ffffff;
+}
+
+th, td {
+    vertical-align: middle !important;
+}
+
+.table th {
+    background-color: #343a40;
+    color: #fff;
+}
+
+.btn-outline-primary {
+    border-radius: 20px;
+}
+
+.btn-success {
+    border-radius: 20px;
+}
+
+.table img {
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+h2 {
+    font-weight: 700;
+    color: #343a40;
+}
+
+.table-responsive {
+    border-radius: 10px;
+    overflow: hidden;
+}
