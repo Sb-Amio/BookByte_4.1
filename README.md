@@ -35,17 +35,26 @@ A Django-based web application that allows users to browse, search, and purchase
 
 🔗 [Click here to view the live project](https://amio201.pythonanywhere.com/)
 
+## Default Login
+Customer Site
+username = Customer
+password = abcdabcd
+
+Admin Site
+username = Sb
+password = abcdabcd
+
 ## 🚀 Getting Started
 
 ### 1. Clone the Repository
 
 ```bash
 git clone https://github.com/Sb-Amio/BookByte_4.1.git
----
 
 After Clone the Repository --> Open the project folder in VSCode --> Run the following command in VSCode Terminal
 
 pip install django
 pip install Pillow
 python manage.py runserver
+
 
