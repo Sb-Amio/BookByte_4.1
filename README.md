@@ -33,12 +33,14 @@ A Django-based web application that allows users to browse, search, and purchase
 
 ## 🚀 Getting Started
 
+## 🌐 Live Demo
+
+🔗 [Click here to view the live project](https://amio201.pythonanywhere.com/)
+
 ### 1. Clone the Repository
 
 ```bash
 git clone https://github.com/Sb-Amio/BookByte_4.1.git
 
-## 🌐 Live Demo
 
-🔗 [Click here to view the live project](https://your-deployment-link.com)
 
