@@ -36,5 +36,4 @@ A Django-based web application that allows users to browse, search, and purchase
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/online-bookstore.git
-cd online-bookstore
+git clone https://github.com/Sb-Amio/BookByte_4.1.git
