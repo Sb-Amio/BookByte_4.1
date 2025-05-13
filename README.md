@@ -36,13 +36,13 @@ A Django-based web application that allows users to browse, search, and purchase
 🔗 [Click here to view the live project](https://amio201.pythonanywhere.com/)
 
 ## Default Login
-Customer Site
-username = Customer
-password = abcdabcd
+- Customer Site
+- username = Customer
+- password = abcdabcd
 
-Admin Site
-username = Sb
-password = abcdabcd
+- Admin Site
+- username = Sb
+- password = abcdabcd
 
 ## 🚀 Getting Started
 
