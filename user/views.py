@@ -1,18 +1,46 @@
 import math
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render, redirect
+from django.urls import reverse
 from products.models import *
 from django.contrib.auth import logout
-from django.db.models import Value
+from django.db.models import Value, Q
 from products.forms import *
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
 @login_required
-def home(request):
-    book = Book.objects.exclude(type_choice='Used').order_by('-date_time')
-    context = {'book': book}
-    return render(request, 'home_user.html',context=context)
+def home(request): # Or whatever your view is named
+    # Start with all books
+    books = Book.objects.all()
+
+    # --- 1. Get all unique categories for the dropdown ---
+    # We get a flat list of unique category names from the database.
+    categories = Book.objects.values_list('category', flat=True).distinct().order_by('category')
+
+    # --- 2. Filtering by Category ---
+    category_filter = request.GET.get('category', '') # Get the selected category
+    if category_filter: # If a category is selected (and not empty)
+        books = books.filter(category=category_filter)
+
+    # --- 3. Sorting by Price ---
+    sort_option = request.GET.get('sort', '') # Get the selected sort option
+    if sort_option == 'price_asc':
+        books = books.order_by('price')
+    elif sort_option == 'price_desc':
+        books = books.order_by('-price')
+    else:
+        # Default sorting, e.g., by newest first
+        books = books.order_by('-date_time')
+
+    context = {
+        'book': books, # Pass the filtered & sorted list of books
+        'categories': categories, # Pass the list of all available categories
+        'current_category': category_filter, # Pass back the selected category for the form
+        'current_sort': sort_option, # Pass back the selected sort option for the form
+    }
+    return render(request, 'home_user.html', context)
 
 @login_required
 def logout_user(request):
@@ -30,15 +58,86 @@ def book_details_user(request, id):
 @login_required
 def search_user(request):
     query = request.GET.get('q')
-    if query:
-        book_results = Book.objects.filter(title__contains=query).annotate(item_type=Value(value='home'))
-        ebook_results = Ebook.objects.filter(title__contains=query).annotate(item_type=Value(value='ebook_user'))
-        accessories_results = Accessories.objects.filter(title__contains=query).annotate(item_type=Value(value='accessories_user'))
-        search_results = list(book_results) + list(ebook_results) + list(accessories_results)
-    else:
-        search_results = None
+    search_results = []  # Initialize as an empty list
 
-    return render(request, template_name='search_results_user.html', context={'search_results': search_results, 'query': query})
+    if query:
+        # --- CORRECTED BOOK SEARCH ---
+        # Search directly in the 'author' CharField.
+        book_results = Book.objects.filter(
+            Q(title__icontains=query) | Q(author__icontains=query)
+        ).distinct().annotate(item_type=Value(value='home')) # .distinct() prevents duplicates
+
+        # --- EBOOK AND ACCESSORIES SEARCH ---
+        # Note: Your Ebook model also has an author CharField. Let's search it too.
+        ebook_results = Ebook.objects.filter(
+            Q(title__icontains=query) | Q(author__icontains=query)
+        ).distinct().annotate(item_type=Value(value='ebook_user'))
+        
+        accessories_results = Accessories.objects.filter(
+            title__icontains=query
+        ).annotate(item_type=Value(value='accessories_user'))
+
+        # Combine the results
+        search_results = list(book_results) + list(ebook_results) + list(accessories_results)
+
+    context = {
+        'search_results': search_results,
+        'query': query
+    }
+    return render(request, 'search_results_user.html', context)
+
+def live_search_suggestions_user(request):
+    """
+    This view handles the AJAX requests for search suggestions.
+    It returns results in JSON format.
+    """
+    query = request.GET.get('q', '').strip()
+    suggestions = []
+    
+    # Only search if the query has 2 or more characters
+    if len(query) >= 2:
+        # Limit the number of results to keep the suggestions list clean
+        limit = 5 
+        
+        # Search Books
+        book_results = Book.objects.filter(
+            Q(title__icontains=query) | Q(author__icontains=query)
+        ).distinct()[:limit]
+        
+        for item in book_results:
+            suggestions.append({
+                'title': item.title,
+                'type': 'Book',
+                # Use reverse() to generate the correct URL dynamically
+                'url': reverse('book_details_user', args=[item.id]) 
+            })
+
+        # Search E-books
+        ebook_results = Ebook.objects.filter(
+            Q(title__icontains=query) | Q(author__icontains=query)
+        ).distinct()[:limit]
+
+        for item in ebook_results:
+            suggestions.append({
+                'title': item.title,
+                'type': 'E-Book',
+                'url': reverse('ebook_details_user', args=[item.id]) # Replace with your ebook detail URL if you have one
+            })
+
+        # Search Accessories
+        accessories_results = Accessories.objects.filter(
+            title__icontains=query
+        )[:limit]
+
+        for item in accessories_results:
+             suggestions.append({
+                'title': item.title,
+                'type': 'Accessory',
+                'url': reverse('accessories_details_user', args=[item.id]) # Replace with your accessory detail URL if you have one
+            })
+
+    # Return the suggestions as a JSON response
+    return JsonResponse({'suggestions': suggestions})
 
 @login_required
 def create_order_book(request, id):
@@ -118,10 +217,25 @@ def calculate_average_review(reviews):
         return 0
 
 @login_required
-def accessories_user(request):
-    accessories_ins = Accessories.objects.all().order_by('-date_time')
-    context = {'accessories_ins': accessories_ins}
-    return render(request, template_name='accessories_user.html', context=context)
+def accessories_user(request): # Or whatever your view is named
+    # Start with all accessories
+    accessories = Accessories.objects.all()
+
+    # --- Sorting by Price ---
+    sort_option = request.GET.get('sort', '') # Get the selected sort option
+    if sort_option == 'price_asc':
+        accessories = accessories.order_by('price')
+    elif sort_option == 'price_desc':
+        accessories = accessories.order_by('-price')
+    else:
+        # Default sorting, e.g., by newest first
+        accessories = accessories.order_by('-date_time')
+
+    context = {
+        'accessories_ins': accessories, # Pass the sorted list of accessories
+        'current_sort': sort_option, # Pass back the selected sort option for the form
+    }
+    return render(request, 'accessories_user.html', context)
 
 @login_required
 def accessories_details_user(request, id):
@@ -159,10 +273,25 @@ def create_order_accessories(request, id):
     return render(request, template_name='order_form_book.html', context=context)
 
 @login_required
-def ebook_user(request):
-    products = Ebook.objects.all().order_by('-date_time')
-    context = {'ebook': products}
-    return render(request, 'ebook_user.html', context=context)
+def ebook_user(request): # Or whatever your view is named
+    # Start with all e-books
+    ebooks = Ebook.objects.all()
+
+    # --- Sorting by Price ---
+    sort_option = request.GET.get('sort', '') # Get the selected sort option
+    if sort_option == 'price_asc':
+        ebooks = ebooks.order_by('price')
+    elif sort_option == 'price_desc':
+        ebooks = ebooks.order_by('-price')
+    else:
+        # Default sorting, e.g., by newest first
+        ebooks = ebooks.order_by('-date_time')
+
+    context = {
+        'ebook': ebooks, # Pass the sorted list of e-books
+        'current_sort': sort_option, # Pass back the selected sort option for the form
+    }
+    return render(request, 'ebook_user.html', context)
 
 @login_required
 def ebook_details_user(request, id):
@@ -171,10 +300,35 @@ def ebook_details_user(request, id):
     return render(request, template_name='ebook_details_user.html', context=context)
 
 @login_required
-def usedBook_user(request):
-    products = Book.objects.filter(type_choice='Used').order_by('-date_time')
-    context = {'products': products}
-    return render(request, template_name='usedBook_user.html', context=context)
+def usedBook_user(request): # Or whatever your view is named
+    # Start with all used books. Adjust the filter if you identify them differently.
+    products = Book.objects.filter(type_choice='Used')
+
+    # --- Get all unique categories for the dropdown ---
+    categories = products.values_list('category', flat=True).distinct().order_by('category')
+
+    # --- Filtering by Category ---
+    category_filter = request.GET.get('category', '')
+    if category_filter:
+        products = products.filter(category=category_filter)
+
+    # --- Sorting by Price ---
+    sort_option = request.GET.get('sort', '')
+    if sort_option == 'price_asc':
+        products = products.order_by('price')
+    elif sort_option == 'price_desc':
+        products = products.order_by('-price')
+    else:
+        # Default sorting
+        products = products.order_by('-date_time')
+
+    context = {
+        'products': products,
+        'categories': categories,
+        'current_category': category_filter,
+        'current_sort': sort_option,
+    }
+    return render(request, 'usedBook_user.html', context)
 
 
 @login_required

@@ -1,96 +1,96 @@
+/* --- Root Variables for Easy Customization --- */
+:root {
+    --navbar-bg: #033E3E;
+    --primary-accent: #0dcaf0;
+    --primary-text-dark: #212529;
+    --link-color: rgba(255, 255, 255, 0.8);
+    --link-hover-color: #ffffff;
+}
 
-    /* Custom Navbar Styles */
-    .custom-navbar {
-        background-color: #033E3E;
-        border-top: none !important;
-        transition: all 0.3s ease;
-    }
+/* --- Main Navbar Styles --- */
+.custom-navbar {
+    background-color: var(--navbar-bg);
+    padding: 0.5rem 1rem;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    min-height: 70px;
+}
 
-    .custom-navbar.navbar-scrolled {
-        background-color: rgba(3, 62, 62, 0.9);
-    }
+.navbar-brand img { height: 45px; width: auto; border-radius: 8px; transition: transform 0.3s ease; }
+.navbar-brand img:hover { transform: scale(1.1); }
+.nav-link { font-size: 1rem; font-weight: 500; color: var(--link-color); padding: 0.5rem 1rem; position: relative; transition: color 0.3s ease; }
+.nav-link:hover { color: var(--link-hover-color); }
+.nav-link.active { color: var(--link-hover-color); font-weight: 600; }
+.custom-navbar .form-control { background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); color: white; transition: all 0.3s ease; }
 
-    .navbar-brand img {
-        height: 50px;
-        width: 60px;
-        border-radius: 10%;
-        margin-left: 20px;
-        transition: all 0.3s ease;
-    }
+/* --- Dropdown Menu Styling --- */
+.dropdown-menu { background-color: #043a3a; border: 1px solid rgba(255, 255, 255, 0.15); padding: 0.5rem 0; }
+.dropdown-item { color: var(--link-color); padding: 0.5rem 1rem; font-size: 0.95rem; transition: background-color 0.2s ease, color 0.2s ease; }
+.dropdown-item:hover, .dropdown-item:focus { background-color: var(--primary-accent); color: var(--primary-text-dark); }
+.dropdown-item i { color: #9eadba; transition: color 0.2s ease; width: 24px; }
+.dropdown-item:hover i, .dropdown-item:focus i { color: var(--primary-text-dark); }
+.dropdown-divider { border-top: 1px solid rgba(255, 255, 255, 0.15); margin: 0.5rem 0; }
 
-    .navbar-brand img:hover {
-        transform: scale(1.1);
-    }
+/*
+======================================================
+=== CORRECTED STYLES for NESTED DROPDOWN (SUBMENU) ===
+======================================================
+*/
+.dropdown-submenu {
+    position: relative; /* This is the positioning context for the submenu */
+}
 
-    .navbar-nav .nav-link {
-        transition: all 0.3s ease;
-    }
-
-    .navbar-nav .nav-link:hover {
-        transform: translateY(-3px);
-    }
-
-    .dropdown-menu {
-        transition: all 0.3s ease;
-    }
-
-    .dropdown-menu a:hover {
-        background-color: #007bff !important;
-        color: #fff !important;
-    }
-
-    .form-control {
-        transition: all 0.3s ease;
-    }
-
-    .form-control:focus {
-        border-color: #007bff;
-        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-    }
-
-    .btn-secondary {
-        transition: all 0.3s ease;
-    }
-
-    .btn-secondary:hover {
-        background-color: #007bff !important;
-        border-color: #007bff !important;
-    }
-
-    /* Style for active nav link */
-    .nav-item.active .nav-link {
-        text-decoration: none;
-    }
+/* Position the submenu to the LEFT of its parent */
+.dropdown-submenu > .dropdown-menu {
+    top: -8px; /* Align top edges, with a slight adjustment */
     
-    .dropdown-submenu {
-        position: relative;
-    }
-    
-    .dropdown-submenu .dropdown-menu {
-        top: 0;
-        left: 100%;
-        margin-top: 0;
-        display: none;
-        position: absolute;
-    }
-    
-    .dropdown-submenu:hover .dropdown-menu {
+    /* THE FIX: Use 'right' instead of 'left' to flip the menu */
+    right: 100%; 
+    left: auto; /* Make sure to reset the 'left' property */
+
+    margin-right: 0.1rem; /* Add a small gap */
+    display: none; /* Hide the submenu by default */
+}
+
+/* Show the submenu when the parent list item is hovered */
+.dropdown-submenu:hover > .dropdown-menu {
+    display: block;
+}
+
+/* Style the arrow on the submenu toggle to point LEFT now */
+.dropdown-submenu > .dropdown-toggle::after {
+    display: inline-block;
+    content: '';
+    border-top: 0.3em solid transparent;
+    border-bottom: 0.3em solid transparent;
+    /* THE FIX: Creates a left-pointing arrow */
+    border-right: 0.3em solid; 
+    vertical-align: middle;
+    /* Adjust position to be on the left side of the text */
+    margin-right: 0.4em; 
+    margin-left: 0;
+}
+
+/* --- RESPONSIVE STYLES for Mobile --- */
+@media (max-width: 991.98px) {
+    /* On mobile, nested dropdowns become standard, indented items */
+    .dropdown-submenu > .dropdown-menu {
+        position: static;
         display: block;
+        width: 100%;
+        background-color: transparent;
+        border: none;
+        padding-left: 1rem; /* Indent submenu items */
     }
-    .dropdown-submenu {
-        position: relative;
+
+    /* On mobile, the arrow should point down again */
+    .dropdown-submenu > .dropdown-toggle::after {
+        border-top: 0.3em solid;
+        border-right: 0.3em solid transparent;
+        border-bottom: 0;
+        border-left: 0.3em solid transparent;
+        margin-right: 0; /* Reset margin */
+        margin-left: 0.255em;
     }
-    
-    .dropdown-submenu .dropdown-menu {
-        top: 0;
-        left: 100%;
-        margin-top: 0;
-        display: none;
-        position: absolute;
-    }
-    
-    .dropdown-submenu:hover .dropdown-menu {
-        display: block;
-    }
-        
-    
+}

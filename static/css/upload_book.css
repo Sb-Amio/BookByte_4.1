@@ -1,92 +1,183 @@
+/* --- Global Form Styles --- */
+:root {
+    --page-bg: #f4f7fc;
+    --card-bg: #ffffff;
+    --primary-accent: #4a90e2;
+    --primary-gradient: linear-gradient(135deg, #4a90e2, #50e3c2);
+    --border-color: #dee2e6;
+    --text-color: #495057;
+    --label-color: #343a40;
+    --error-color: #dc3545;
+}
 
-    .form-container {
-        display: flex;
-        justify-content: center;
-        padding: 40px 20px;
-    }
+body {
+    background-color: var(--page-bg);
+    font-family: 'Poppins', sans-serif;
+}
 
-    .form-card {
-        background-color: #ffffff;
-        padding: 25px 30px;
-        width: 100%;
-        max-width: 720px;
-        border-radius: 14px;
-        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.07);
-        font-family: 'Segoe UI', sans-serif;
-    }
+.form-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 1rem;
+    overflow: hidden;
+}
 
-    .form-card h2 {
-        text-align: center;
-        margin-bottom: 20px;
-        font-size: 24px;
-        color: #222;
-        font-weight: 600;
-    }
+/* --- Card Header Styling --- */
+.card-header {
+    background: var(--primary-gradient);
+    color: white;
+    padding: 2.5rem;
+    border-bottom: none;
+    text-align: center;
+}
 
-    .form-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 14px 20px;
-    }
+.card-header .bi {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+}
 
-    .form-group {
-        display: flex;
-        flex-direction: column;
-    }
+.card-header h2 {
+    font-weight: 600;
+}
 
-    .form-label {
-        font-size: 13px;
-        font-weight: 600;
-        color: #333;
-        margin-bottom: 4px;
-    }
+.card-header p {
+    color: rgba(255, 255, 255, 0.85);
+    margin-bottom: 0;
+}
 
-    .form-group input,
-    .form-group select,
-    .form-group textarea {
-        padding: 9px 12px;
-        border: 1px solid #d0d0d0;
-        border-radius: 8px;
-        font-size: 14px;
-        background-color: #fafafa;
-        transition: all 0.2s ease;
-    }
+/* --- Sectioning within the Form --- */
+.form-section {
+    margin-bottom: 2rem;
+}
 
-    .form-group input:focus,
-    .form-group select:focus,
-    .form-group textarea:focus {
-        border-color: #007bff;
-        background-color: #fff;
-        box-shadow: 0 0 5px rgba(0, 123, 255, 0.1);
-        outline: none;
-    }
+.section-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--label-color);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+}
 
-    .form-group textarea {
-        min-height: 80px;
-        resize: vertical;
-        grid-column: span 2;
-    }
+.section-title .bi {
+    color: var(--primary-accent);
+    margin-right: 0.75rem;
+    font-size: 1.25rem;
+}
 
-    .btn-submit {
-        margin-top: 25px;
-        width: 100%;
-        padding: 10px;
-        background-color: #007bff;
-        border: none;
-        color: white;
-        font-size: 15px;
-        font-weight: 600;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: background-color 0.25s ease;
-    }
+/* --- Form Field Styling --- */
+.form-field {
+    margin-bottom: 0.5rem;
+}
 
-    .btn-submit:hover {
-        background-color: #0056b3;
-    }
+.form-label {
+    font-weight: 500;
+    color: var(--label-color);
+    font-size: 0.9rem;
+}
 
-    @media (max-width: 768px) {
-        .form-grid {
-            grid-template-columns: 1fr;
-        }
-    }
+.form-control,
+.form-select {
+    border-radius: 0.5rem;
+    padding: 0.75rem 1rem;
+    border: 1px solid #ced4da;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--primary-accent);
+    box-shadow: 0 0 0 0.25rem rgba(74, 144, 226, 0.25);
+}
+
+textarea.form-control {
+    min-height: 120px;
+    resize: vertical;
+}
+
+/* --- Image Preview Uploader --- */
+#image-preview-box {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    border: 2px dashed #ced4da;
+    border-radius: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background-color: #f8f9fa;
+    transition: all 0.2s ease-in-out;
+    overflow: hidden;
+}
+
+#image-preview-box:hover {
+    border-color: var(--primary-accent);
+    background-color: #eef5ff;
+}
+
+#image-preview-box.has-image {
+    border-style: solid;
+    border-color: var(--primary-accent);
+}
+
+.image-placeholder {
+    text-align: center;
+    color: #6c757d;
+}
+
+.image-placeholder .bi {
+    font-size: 3rem;
+    color: #adb5bd;
+}
+
+#image-preview-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* --- Error Styling --- */
+.field-with-errors .form-control,
+.field-with-errors .form-select {
+    border-color: var(--error-color);
+}
+
+.field-with-errors .form-control:focus,
+.field-with-errors .form-select:focus {
+    box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25);
+}
+
+.invalid-feedback {
+    display: block;
+    /* Make Django's errors visible */
+    list-style-type: none;
+    padding: 0;
+    margin-top: 0.25rem;
+    font-size: 0.8rem;
+    color: var(--error-color);
+}
+
+/* --- Card Footer & Submit Button --- */
+.card-footer {
+    background-color: #f8f9fa;
+    padding: 1.5rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.btn-submit {
+    background: var(--primary-gradient);
+    color: white;
+    border: none;
+    padding: 0.8rem 3rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+}
+
+.btn-submit:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 7px 14px rgba(80, 227, 194, 0.2), 0 3px 6px rgba(0, 0, 0, 0.08);
+}

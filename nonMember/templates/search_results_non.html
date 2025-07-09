@@ -1,48 +1,76 @@
+{% extends 'main_non.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Search Results</title>
-    <link rel="stylesheet" href="{% static 'css/search_results_non.css' %}">
-</head>
-<body>
-    <div class="container">
-        <h2>Search Results for "{{ query }}"</h2>
-        {% if search_results %}
-            <ul>
-                {% for item in search_results %}
-                    <li>
-                        {% if item.item_type|lower == 'book_non' %}
-                            {% if item.images %}
-                                <img src="{{ item.images.url }}" alt="{{ item.title }}" class="book-image">
-                            {% endif %}
-                            <strong>Title:</strong> {{ item.title }}<br>
-                            <strong>Author:</strong> {{ item.author }}<br>
-                        {% elif item.item_type|lower == 'ebook_non' %}
-                            <strong>Title:</strong> {{ item.title }}<br>
-                            <strong>Author:</strong> {{ item.author }}<br>
-                        {% elif item.item_type|lower == 'accessories_non' %}
-                            <strong>Title:</strong> {{ item.title }}<br>
-                        {% endif %}
 
-                        {% if item.item_type|lower == 'book_non' %}
-                            <a href="{% url 'book_details_non' item.id %}" class="view-details-link">View Details</a>
-                        {% elif item.item_type|lower == 'ebook_non' %}
-                             <a href="{% url 'ebook_details_non' item.id %}" class="view-details-link">View Details</a> 
-                        {% elif item.item_type|lower == 'accessories_non' %}
-                             <a href="{% url 'accessories_details_non' item.id %}" class="view-details-link">View Details</a> 
-                        {% endif %}
-                    </li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <p>No results found for "{{ query }}"</p>
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/search_results_non.css' %}">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+<div class="container py-5">
+    <div class="search-header mb-5">
+        <h2 class="fw-light">Search Results for "<span class="fw-bold text-info">{{ query }}</span>"</h2>
+    </div>
+
+    {% if search_results %}
+    <div class="search-results-container">
+        {% for item in search_results %}
+
+        {% comment %} Determine the correct URL and store it in a variable {% endcomment %}
+        {% if item.item_type == 'book_non' %}
+        {% url 'book_details_non' item.id as details_url %}
+        {% elif item.item_type == 'ebook_non' %}
+        {% url 'ebook_details_non' item.id as details_url %}
+        {% elif item.item_type == 'accessories_non' %}
+        {% url 'accessories_details_non' item.id as details_url %}
         {% endif %}
-        <div class="text-center">
-            <a href="javascript:history.back()" class="btn btn-outline-primary">
-                <i class="fas fa-arrow-left"></i> Go Back
-            </a>
-        </div>
-</body>
-</html>
+
+        {% comment %} The clickable result item, now styled as a card {% endcomment %}
+        <a href="{{ details_url }}" class="search-result-item">
+            <!-- Image or Placeholder -->
+            <div class="item-image-wrapper">
+                {% if item.image %}
+                <img src="{{ item.image.url }}" alt="{{ item.title }}" class="item-image">
+                {% else %}
+                <div class="item-placeholder">
+                    <i class="fas fa-book-open"></i>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Title and Author -->
+            <div class="item-details">
+                <h5 class="item-title">{{ item.title }}</h5>
+                {% if item.author %}
+                <p class="item-author">By {{ item.author }}</p>
+                {% endif %}
+            </div>
+
+            <!-- Item Type Badge -->
+            <div class="item-badge-wrapper">
+                {% if item.item_type == 'book_non' %}
+                <span class="badge rounded-pill bg-primary">Book</span>
+                {% elif item.item_type == 'ebook_non' %}
+                <span class="badge rounded-pill bg-success">E-Book</span>
+                {% elif item.item_type == 'accessories_non' %}
+                <span class="badge rounded-pill bg-secondary">Accessory</span>
+                {% endif %}
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+
+    {% else %}
+    <div class="no-results-panel">
+        <i class="fas fa-search fa-3x text-muted mb-3"></i>
+        <h4 class="fw-bold">No Results Found</h4>
+        <p class="text-muted">We couldn't find anything for "{{ query }}". Try a different search.</p>
+    </div>
+    {% endif %}
+
+    <div class="text-center mt-5">
+        <a href="javascript:history.back()" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-2"></i>Go Back
+        </a>
+    </div>
+</div>
+{% endblock %}

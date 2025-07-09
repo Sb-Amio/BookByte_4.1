@@ -1,38 +1,80 @@
 {% extends 'main_user.html' %}
-{% load static %} 
-{% block content %}
-<link rel="stylesheet" href="{% static 'css/home_user.css' %}">    
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+{% load static %}
 
-<div class="container py-4">
+{% block title %}Accessories{% endblock %}
+
+{% block head_css %}
+    {# This is the same CSS file used by home_user.html #}
+    <link rel="stylesheet" href="{% static 'css/home_user.css' %}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+{% endblock %}
+
+
+{% block content %}
+<div class="container py-5">
+    <!-- === SORT BAR (Adapted for Accessories) === -->
+    <div class="filter-bar mb-4">
+        <form action="{% url 'accessories_user' %}" method="GET" class="d-flex align-items-end gap-3 flex-wrap">
+            
+            <!-- Sort by Price -->
+            <div class="form-group mb-0 flex-grow-1">
+                <label for="sort-select" class="form-label small">Sort by</label>
+                <select name="sort" id="sort-select" class="form-select" onchange="this.form.submit()">
+                    <option value="default" {% if not current_sort or current_sort == 'default' %}selected{% endif %}>Default</option>
+                    <option value="price_asc" {% if current_sort == 'price_asc' %}selected{% endif %}>Price: Low to High</option>
+                    <option value="price_desc" {% if current_sort == 'price_desc' %}selected{% endif %}>Price: High to Low</option>
+                </select>
+            </div>
+
+            <!-- "Clear" button to reset the sorting -->
+            <div class="form-group mb-0">
+                <a href="{% url 'accessories_user' %}" class="btn btn-outline-secondary">Clear</a>
+            </div>
+        </form>
+    </div>
+
+    <!-- === PRODUCT CARD GRID === -->
     <div class="row">
         {% for p in accessories_ins %}
-        <div class="col-md-3 mb-4">
-            <div class="card h-100 shadow-sm rounded-4">
-                {% if p.image %}
-                <img src="{{ p.image.url }}" class="card-img-top rounded-top" style="height: 200px; object-fit: contain;" alt="{{ p.title }}">
-                {% endif %}
-                <div class="card-body">
-                    <h6 class="card-title fw-semibold">{{ p.title }}</h6>
-                    <p class="card-text">Price: {{ p.price }} Taka</p>
+        <div class="col-lg-3 col-md-4 col-sm-6 mb-4 d-flex align-items-stretch">
+            <div class="card product-card h-100 w-100">
+                <div class="card-image-wrapper">
+                    {% if p.image %}
+                        <img src="{{ p.image.url }}" class="card-img-top" alt="{{ p.title }}">
+                    {% endif %}
+                    
+                    <span class="category-badge">Accessory</span>
+                    
                     {% if p.quantity == 0 %}
-                        <p class="card-text fw-bold text-danger">Stock Out!</p>
+                        <div class="stock-out-badge">Out of Stock</div>
                     {% endif %}
                 </div>
-                <div class="card-footer bg-white border-top-0">
-                    <div class="d-flex justify-content-between gap-2">
-                        <a href="{% url 'accessories_details_user' p.id %}" class="btn btn-outline-info btn-sm rounded-pill w-100">
-                            <i class="fas fa-info-circle me-1"></i> Details
-                        </a>
-                        {% if p.quantity != 0 %}
-                        <a href="{% url 'add_to_cart_accessories' p.id %}" class="btn btn-outline-success btn-sm rounded-pill w-100">
-                            <i class="fas fa-cart-plus me-1"></i> Add to Cart
-                        </a>
-                        {% endif %}
-                    </div>
+                
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">{{ p.title }}</h5>
+                    {# The mt-auto class pushes the price to the bottom, ensuring vertical alignment #}
+                    <p class="card-price mt-auto">{{ p.price }} Taka</p>
+                </div>
+
+                <div class="card-actions">
+                    <a href="{% url 'accessories_details_user' p.id %}" class="btn btn-outline-light btn-sm rounded-pill">
+                        <i class="fas fa-info-circle me-1"></i> Details
+                    </a>
+                    <a href="{% url 'add_to_cart_accessories' p.id %}" class="btn btn-light btn-sm rounded-pill {% if p.quantity == 0 %}disabled{% endif %}">
+                        <i class="fas fa-shopping-cart me-1"></i> Add to Cart
+                    </a>
                 </div>
             </div>
         </div>
+        {% empty %}
+            <div class="col-12">
+                <div class="text-center p-5 bg-light rounded-3">
+                    <i class="fas fa-box-open fa-3x text-muted mb-3"></i>
+                    <h4 class="fw-bold">No Accessories Found</h4>
+                    <p class="text-muted">There are currently no accessories available.</p>
+                </div>
+            </div>
         {% endfor %}
     </div>
 </div>

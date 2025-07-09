@@ -1,78 +1,141 @@
+/* --- Root Variables for Easy Customization --- */
+:root {
+    --navbar-bg: #033E3E;
+    --primary-accent: #0dcaf0;
+    --primary-text-dark: #212529;
+    --link-color: rgba(255, 255, 255, 0.8);
+    --link-hover-color: #ffffff;
+}
 
-    /* Custom Navbar Styles */
-    .custom-navbar {
-        background-color: #033E3E;
-        border-top: none !important;
-        transition: all 0.3s ease;
+/* --- Main Navbar Styles --- */
+.custom-navbar {
+    background-color: var(--navbar-bg);
+    padding: 0.5rem 1rem;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    min-height: 70px;
+}
+
+.navbar-brand img {
+    height: 45px;
+    width: auto;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+}
+
+.navbar-brand img:hover {
+    transform: scale(1.1);
+}
+
+/* --- Navigation Links --- */
+.nav-link {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--link-color);
+    padding: 0.5rem 1rem;
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+    color: var(--link-hover-color);
+}
+
+/* Animated underline for hover and active states */
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 2px;
+    background-color: var(--primary-accent);
+    transition: width 0.3s ease-in-out;
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+    width: 60%;
+}
+
+.nav-link.active {
+    color: var(--link-hover-color);
+    font-weight: 600;
+}
+
+/* --- Search Form & Profile Button --- */
+.custom-navbar .form-control {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.custom-navbar .form-control::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.custom-navbar .form-control:focus {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-color: var(--primary-accent);
+    box-shadow: 0 0 0 0.2rem rgba(13, 202, 240, 0.25);
+    color: white;
+}
+
+/* --- Dropdown Menu Styling --- */
+.dropdown-menu {
+    background-color: #043a3a;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 0.5rem 0;
+}
+
+.dropdown-item {
+    color: var(--link-color);
+    padding: 0.5rem 1rem;
+    font-size: 0.95rem;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.dropdown-item:hover, .dropdown-item:focus {
+    background-color: var(--primary-accent);
+    color: var(--primary-text-dark);
+}
+
+.dropdown-item i {
+    color: #9eadba;
+    transition: color 0.2s ease;
+    width: 24px;
+}
+.dropdown-item:hover i, .dropdown-item:focus i {
+    color: var(--primary-text-dark);
+}
+
+.dropdown-divider {
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    margin: 0.5rem 0;
+}
+
+/* --- RESPONSIVE STYLES for Mobile --- */
+@media (max-width: 991.98px) {
+    .navbar-collapse {
+        padding: 1.5rem 1rem;
+    }
+    
+    .nav-link {
+        padding: 0.75rem 0;
     }
 
-    .custom-navbar.navbar-scrolled {
-        background-color: rgba(3, 62, 62, 0.9);
+    .nav-link::after {
+        left: 0;
+        transform: none;
     }
 
-    .navbar-brand img {
-        height: 60px;
-        width: 60px;
-        border-radius: 10%;
-        margin-left: 20px;
-        transition: all 0.3s ease;
+    .custom-navbar .d-flex {
+        flex-direction: column;
+        align-items: stretch !important;
+        margin-top: 1.5rem;
+        gap: 1rem !important;
     }
-
-    .navbar-brand img:hover {
-        transform: scale(1.1);
-    }
-
-    .navbar-nav .nav-link {
-        transition: all 0.3s ease;
-    }
-
-    .navbar-nav .nav-link:hover {
-        transform: translateY(-3px);
-        /* background-color: darkred; Change to a darker shade on hover */
-        /* transform: scale(1.05); Slightly enlarge the button */
-        /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); Add shadow for depth */
-    }
-    .dropdown-menu {
-        transition: all 0.3s ease;
-    }
-
-    .dropdown-menu a:hover {
-        background-color: #007bff !important;
-        color: #fff !important;
-    }
-
-    .form-control {
-        transition: all 0.3s ease;
-    }
-
-    .form-control:focus {
-        border-color: #007bff;
-        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-    }
-
-    .btn-secondary {
-        transition: all 0.3s ease;
-    }
-
-    .btn-secondary:hover {
-        background-color: #007bff !important;
-        border-color: #007bff !important;
-    }
-
-    /* Style for active nav link */
-    .nav-item.active .nav-link {
-        text-decoration: underline;
-    }
-
-    .welcome-container {
-
-        display: flex;
-        align-items: center;
-        color: darkseagreen;
-
-    }
-
-    .welcome-message {
-        margin-right: 10px; /* Add spacing between welcome message and logout button */
-        margin-left: auto;
-    }
+}

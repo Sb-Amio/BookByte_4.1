@@ -79,6 +79,7 @@ urlpatterns = [
     path('find_book/', u_views.find_book, name='find_book'),
     path('edit_book/<str:id>/', u_views.edit_book, name='edit_book'),
     path('order/cancel/<int:id>/', u_views.cancel_order, name='cancel_order'),
+    path('live-search-suggestions/', u_views.live_search_suggestions_user, name='live_search_suggestions_user'),
 
 
     #Non-Registered User

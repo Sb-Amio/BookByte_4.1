@@ -1,6 +1,8 @@
 import math
-from django.db.models import Value
+from django.db.models import Q, Value
+from django.http import JsonResponse
 from django.shortcuts import render
+from django.urls import reverse
 from products.models import *
 
 # Create your views here.
@@ -20,18 +22,34 @@ def book_details_non(request, id):
 
 def search_non(request):
     query = request.GET.get('q')
+    search_results = []  # Initialize as an empty list
+
     if query:
-        book_results = Book.objects.filter(title__contains=query).annotate(item_type=Value(value='book_non'))
-        book_results = Book.objects.filter(author=query).annotate(item_type=Value(value='book_non'))
-        ebook_results = Ebook.objects.filter(title__contains=query).annotate(item_type=Value(value='ebook_non'))
-        accessories_results = Accessories.objects.filter(title__contains=query).annotate(
-            item_type=Value(value='accessories_non'))
+        # --- CORRECTED BOOK SEARCH ---
+        # Search directly in the 'author' CharField.
+        book_results = Book.objects.filter(
+            Q(title__icontains=query) | Q(author__icontains=query)
+        ).distinct().annotate(item_type=Value(value='book_non')) # .distinct() prevents duplicates
 
+        # --- EBOOK AND ACCESSORIES SEARCH ---
+        # Note: Your Ebook model also has an author CharField. Let's search it too.
+        ebook_results = Ebook.objects.filter(
+            Q(title__icontains=query) | Q(author__icontains=query)
+        ).distinct().annotate(item_type=Value(value='ebook_non'))
+        
+        accessories_results = Accessories.objects.filter(
+            title__icontains=query
+        ).annotate(item_type=Value(value='accessories_non'))
+
+        # Combine the results
         search_results = list(book_results) + list(ebook_results) + list(accessories_results)
-    else:
-        search_results = None
 
-    return render(request, template_name='search_results_non.html', context={'search_results': search_results, 'query': query})
+    context = {
+        'search_results': search_results,
+        'query': query
+    }
+    return render(request, 'search_results_non.html', context)
+
 
 def calculate_average_review(reviews):
     total_score = 0

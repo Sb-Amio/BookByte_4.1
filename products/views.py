@@ -2,7 +2,7 @@ import math
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render, redirect, get_object_or_404
-from django.db.models import Value
+from django.db.models import Value, Q
 from .forms import  *
 from .models import *
 from django.contrib.auth import authenticate, login, logout
@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout as django_logout
 from django.views.decorators.cache import never_cache
 from django.views.decorators.cache import cache_control
-
+from django.core.paginator import Paginator
 import sys
 
 sys.setrecursionlimit(150)
@@ -24,10 +24,35 @@ def useradmin(request):
 def loginPage(request):
     return render(request, template_name='loginpage.html')
 
-def main(request):
-    products = Book.objects.all().exclude(type_choice = 'Used').order_by('-date_time')
-    context = {'products': products}
-    return render(request, template_name='home.html', context=context)
+def main(request): # Or whatever your view is named (e.g., home_admin)
+    # Start with all products
+    products = Book.objects.all()
+
+    # --- Get all unique categories for the dropdown ---
+    categories = Book.objects.values_list('category', flat=True).distinct().order_by('category')
+
+    # --- Filtering by Category ---
+    category_filter = request.GET.get('category', '')
+    if category_filter:
+        products = products.filter(category=category_filter)
+
+    # --- Sorting by Price ---
+    sort_option = request.GET.get('sort', '')
+    if sort_option == 'price_asc':
+        products = products.order_by('price')
+    elif sort_option == 'price_desc':
+        products = products.order_by('-price')
+    else:
+        # Default sorting
+        products = products.order_by('-date_time')
+
+    context = {
+        'products': products,
+        'categories': categories,
+        'current_category': category_filter,
+        'current_sort': sort_option,
+    }
+    return render(request, 'home.html', context)
 
 def register(request, user_type):
     form = CustomUserCreationForm()
@@ -146,11 +171,25 @@ def upload_accessories(request):
     context = {'form': form}
     return render(request, template_name='upload_accessories.html', context=context)
 
-def ebooks(request):
-    products = Ebook.objects.all().order_by('-date_time')
-    context = {'products': products}
-    return render(request, template_name='ebook.html', context=context)
+def ebooks(request): # Or whatever your view is named (e.g., ebook)
+    # Start with all e-books
+    products = Ebook.objects.all()
 
+    # --- Sorting by Price ---
+    sort_option = request.GET.get('sort', '')
+    if sort_option == 'price_asc':
+        products = products.order_by('price')
+    elif sort_option == 'price_desc':
+        products = products.order_by('-price')
+    else:
+        # Default sorting
+        products = products.order_by('-date_time')
+
+    context = {
+        'products': products,
+        'current_sort': sort_option,
+    }
+    return render(request, 'ebook.html', context)
 @login_required
 def delete_ebook(request, id):
     ebook_to_delete = Ebook.objects.get(pk=id)
@@ -175,10 +214,25 @@ def ebook_details(request, id):
     context = {'products': products}
     return render(request, template_name='ebook_details.html', context=context)
 
-def accessories(request):
-    products = Accessories.objects.all().order_by('-date_time')
-    context = {'products': products}
-    return render(request, template_name='accessories.html', context=context)
+def accessories(request): # Or whatever your view is named (e.g., accessories)
+    # Start with all accessories
+    products = Accessories.objects.all()
+
+    # --- Sorting by Price ---
+    sort_option = request.GET.get('sort', '')
+    if sort_option == 'price_asc':
+        products = products.order_by('price')
+    elif sort_option == 'price_desc':
+        products = products.order_by('-price')
+    else:
+        # Default sorting
+        products = products.order_by('-date_time')
+
+    context = {
+        'products': products,
+        'current_sort': sort_option,
+    }
+    return render(request, 'accessories.html', context)
 
 def accessories_details(request, id):
     products = Accessories.objects.get(pk=id)
@@ -224,20 +278,84 @@ def calculate_average_review(reviews):
         return 0
     
 def usedBook(request):
-    products = Book.objects.filter(type_choice='Used').order_by('-date_time')
-    context = {'products': products}
-    return render(request, template_name='usedBook.html', context=context)
+    # Or whatever your view is named (e.g., usedBook)
+    # Start with all used books. Adjust the filter if you identify them differently.
+    products = Book.objects.filter(type_choice='Used')
+
+    # --- Get all unique categories from the used books for the dropdown ---
+    categories = products.values_list('category', flat=True).distinct().order_by('category')
+
+    # --- Filtering by Category ---
+    category_filter = request.GET.get('category', '')
+    if category_filter:
+        products = products.filter(category=category_filter)
+
+    # --- Sorting by Price ---
+    sort_option = request.GET.get('sort', '')
+    if sort_option == 'price_asc':
+        products = products.order_by('price')
+    elif sort_option == 'price_desc':
+        products = products.order_by('-price')
+    else:
+        # Default sorting
+        products = products.order_by('-date_time')
+
+    context = {
+        'products': products,
+        'categories': categories,
+        'current_category': category_filter,
+        'current_sort': sort_option,
+    }
+    return render(request, 'usedBook.html', context)
+
 
 def ordered_items(request):
-    orders = Order.objects.all().order_by('-date_time')
-    context = {'orders': orders}
+        # --- Performance Optimization ---
+    # Use select_related to pre-fetch related user and product data in a single query,
+    # preventing hundreds of extra database hits.
+    order_list = Order.objects.select_related(
+        'user', 'book', 'ebook', 'accessories'
+    ).order_by('-date_time')
+
+    # --- Get Dashboard Stats ---
+    total_orders = order_list.count()
+    pending_orders_count = order_list.filter(status='pending').count()
+    delivered_orders_count = order_list.filter(status='delivered').count()
+
+    # --- Search Logic ---
+    query = request.GET.get('q', '')
+    if query:
+        order_list = order_list.filter(
+            Q(user__username__icontains=query) |
+            Q(book__title__icontains=query) |
+            Q(ebook__title__icontains=query) |
+            Q(accessories__title__icontains=query)
+        )
+
+    # --- Status Filter Logic ---
+    status_filter = request.GET.get('status', '')
+    if status_filter in ['pending', 'delivered']:
+        order_list = order_list.filter(status=status_filter)
+
+    # --- Pagination ---
+    paginator = Paginator(order_list, 10) # Show 10 orders per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    context = {
+        'page_obj': page_obj, # Pass the paginated list of orders
+        'total_orders': total_orders,
+        'pending_orders': pending_orders_count,
+        'delivered_orders': delivered_orders_count,
+        'query': query,
+        'current_status': status_filter,
+    }
     return render(request, 'ordered_items.html', context)
 
+# You will also need the view to handle the status update
 def update_order_status(request, id):
     if request.method == 'POST':
-        order = get_object_or_404(Order, id=id)
-        new_status = request.POST.get('status')
-        if new_status in ['pending', 'delivered']:
-            order.status = new_status
-            order.save()
+        order = Order.objects.get(id=id)
+        order.status = request.POST.get('status')
+        order.save()
     return redirect('ordered_items')

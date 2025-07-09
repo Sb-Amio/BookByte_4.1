@@ -1,33 +1,43 @@
+/* --- Polished Carousel/Slider Styles --- */
 
-.carousel-item img {
-    height: 450px;
-    width: 100%;
-    object-fit: cover;
+#mainCarousel .carousel-item {
+    height: 65vh; /* Set a consistent height for the slides */
+    min-height: 400px;
 }
-.carousel-caption {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
-    color: #fff;
-    padding: 20px;
-    text-align: center;
+
+#mainCarousel .carousel-item img {
+    height: 100%;
+    object-fit: cover; /* Ensures the image covers the area without distortion */
+    filter: brightness(0.6); /* Darkens the image so text is readable */
 }
-</style>  <style>
-/* Custom carousel styles */
-.carousel-item img {
-    height: 450px;
-    width: 100%;
-    object-fit: cover;
+
+#mainCarousel .carousel-caption {
+    bottom: 25%; /* Position the text nicely in the vertical center */
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8); /* Add a shadow to text for readability */
 }
-.carousel-caption {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
-    color: #fff;
-    padding: 20px;
-    text-align: center;
+
+#mainCarousel .carousel-caption h1 {
+    font-size: 3.5rem;
+    font-weight: 700;
+}
+
+#mainCarousel .carousel-caption h3 {
+    font-size: 2.5rem;
+    font-weight: 600;
+}
+
+#mainCarousel .carousel-caption p {
+    font-size: 1.25rem;
+}
+
+/* Style the previous/next control buttons */
+.carousel-control-prev, .carousel-control-next {
+    width: 5%;
+}
+
+.carousel-control-prev-icon, .carousel-control-next-icon {
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 50%;
+    padding: 1.5rem;
+    background-size: 50%;
 }

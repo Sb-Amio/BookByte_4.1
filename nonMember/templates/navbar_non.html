@@ -1,102 +1,62 @@
 {% load static %}
 <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
-<nav class="navbar navbar-expand-lg navbar-dark custom-navbar">
-    <a class="navbar-brand" href="{% url 'book_non' %}">
-        <img src="{% static 'images/images (1).png' %}" alt="">
-    </a>
-    <div class="welcome-container">
-        {% if user.username %}
-        <!--<h4 class="welcome-message">Welcome {{ user.username }}</h4>-->
-        {% endif %}
-    </div>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent" style="margin-left: 20px">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item{% if request.path == '/book_non/' %} active{% endif %}">
-                <a class="nav-link" href="{% url 'book_non' %}" style="font-size: large">Home</a>
-            </li>
-            <li class="nav-item{% if request.path == '/ebook_non/' %} active{% endif %}">
-                <a class="nav-link" href="{% url 'ebook_non' %}" style="font-size: large">E-Book</a>
-            </li>
-            <li class="nav-item{% if request.path == '/accessories_non/' %} active{% endif %}">
-                <a class="nav-link" href="{% url 'accessories_non' %}" style="font-size: large">Accessories</a>
-            </li> 
-            <li class="nav-item{% if request.path == '/usedBook_non/' %} active{% endif %}">
-                <a class="nav-link" href="{% url 'usedBook_non' %}" style="font-size: large">Used Book</a>
-            </li>
-            <li class="nav-item{% if request.path == '/chatbot/' %} active{% endif %}">
-                <a class="nav-link" href="{% url 'chatbot' %}" style="font-size: large">Third-(i)</a>
-            </li>
-            <li class="nav-item{% if request.path == '/find_book/' %} active{% endif %}">
-                <a class="nav-link" href="{% url 'find_book' %}" style="font-size: large">InfoSnap</a>
-            </li>
-        <a href="{% url 'login_user' %}" class="btn btn-primary" style="margin-left: 500px">Sign In/Sign Up</a>
-        </ul>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
-        <form class="form-inline my-2 my-lg-0" action="{% url 'search_non' %}" method="GET" style="margin-right: 30px">
-            <input class="form-control mr-sm-2" type="search" name="q" placeholder="Search Items..." aria-label="Search">
-            <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
-        </form>
+<nav class="navbar navbar-expand-lg navbar-dark custom-navbar sticky-top">
+    <div class="container-fluid">
+        <!-- Brand Logo -->
+        <a class="navbar-brand" href="{% url 'book_non' %}">
+            <img src="{% static 'images/images (1).png' %}" alt="Logo">
+        </a>
+
+        <!-- Mobile Menu Toggler -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Collapsible Content -->
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <!-- Left-aligned Navigation Links -->
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/book_non/' %}active{% endif %}"
+                        href="{% url 'book_non' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/ebook_non/' %}active{% endif %}"
+                        href="{% url 'ebook_non' %}">E-Book</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/accessories_non/' %}active{% endif %}"
+                        href="{% url 'accessories_non' %}">Accessories</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/usedBook_non/' %}active{% endif %}"
+                        href="{% url 'usedBook_non' %}">Used Book</a>
+                </li>
+            </ul>
+
+            <!-- Right-aligned items: Search Form and Sign In Button -->
+            <!-- The 'gap-3' class provides the perfect spacing between the search form and the button -->
+            <div class="d-flex align-items-center gap-3">
+
+                <!-- Search Form with Live Suggestions Wrapper -->
+                <div id="search-wrapper" style="position: cover;">
+                    <form class="d-flex" action="{% url 'search_non' %}" method="GET">
+                        <input id="search-input" class="form-control me-2" type="search" name="q"
+                            placeholder="Search items..." aria-label="Search" autocomplete="off">
+                        <button class="btn btn-outline-info" type="submit">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Sign In Button -->
+                <!-- No inline style needed. 'gap-3' on the parent div handles the spacing. -->
+                <a href="{% url 'login_user' %}" class="btn btn-info text-white" style="margin-left: 10px;">Sign In</a>
+
+            </div>
+        </div>
     </div>
 </nav>
-
-<body>
-<!-- Modal -->
-<div id="myModal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <span class="close">&times;</span>
-            <button id="goBackButton" class="btn btn-secondary btn-sm">Go Back</button>
-        </div>
-        <div class="container">
-            {% if search_results %}
-                <div class="search-results">
-                    <h2>Search Results for "{{ query }}"</h2>
-                    <ul>
-                        {% for book in search_results %}
-                            <li onclick="window.location='{% url 'book_details_non' book.id %}'">{{ book.title }}</li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            {% else %}
-                <div class="search-results">
-                    <p>No results found for "{{ query }}"</p>
-                </div>
-            {% endif %}
-        </div>
-    </div>
-</div>
-
-
-<!-- JavaScript code to handle form submission and display results in the modal -->
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var modal = document.getElementById("myModal");
-        var searchForm = document.getElementById("searchForm");
-        var searchInput = document.getElementById("searchInput");
-
-        // Show modal and submit form on search button click
-        document.getElementById("searchButton").addEventListener('click', function() {
-            modal.style.display = "block";
-            searchForm.submit();
-        });
-
-        // Get the <span> element that closes the modal
-        var span = document.getElementsByClassName("close")[0];
-
-        // When the user clicks on <span> (x), close the modal
-        span.onclick = function() {
-            modal.style.display = "none";
-        }
-
-        // When the user clicks anywhere outside of the modal, close it
-        window.onclick = function(event) {
-            if (event.target == modal) {
-                modal.style.display = "none";
-            }
-        }
-    });
-</script>
-</body>

@@ -1,27 +1,45 @@
 {% extends 'main_non.html' %}
-{% load static %} 
+{% load static %}
 {% block content %}
-<link rel="stylesheet" href="{% static 'css/home_non.css' %}">    
+{# This is the same CSS file used by home_non.html, ensuring a consistent look #}
+<link rel="stylesheet" href="{% static 'css/home_non.css' %}">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-<div class="container py-4">
+<div class="container py-5">
     <div class="row">
+        {# Note: Using the loop variable `accessories_ins` from your original template #}
         {% for p in accessories_ins %}
-        <div class="col-md-3 mb-4">
-            <div class="card h-100 shadow-sm rounded-4">
-                {% if p.image %}
-                <img src="{{ p.image.url }}" class="card-img-top rounded-top" style="height: 200px; object-fit: contain;" alt="{{ p.title }}">
-                {% endif %}
-                <div class="card-body">
-                    <h6 class="card-title fw-semibold">{{ p.title }}</h6>
-                    <p class="card-text">Price: {{ p.price }} Taka</p>
+        <div class="col-lg-3 col-md-4 col-sm-6 mb-4 d-flex align-items-stretch">
+            <div class="card product-card h-100 w-100">
+                <div class="card-image-wrapper">
+                    {% if p.image %}
+                        <img src="{{ p.image.url }}" class="card-img-top" alt="{{ p.title }}">
+                    {% endif %}
+                    
+                    {# A static badge to identify the item type #}
+                    <span class="category-badge">Accessory</span>
+                    
+                    {# Add the "Out of Stock" badge if quantity is 0 #}
+                    {% if p.quantity == 0 %}
+                        <div class="stock-out-badge">Out of Stock</div>
+                    {% endif %}
                 </div>
-                <div class="card-footer bg-white border-top-0">
-                    <div class="d-flex justify-content-between gap-2">
-                        <a href="{% url 'accessories_details_non' p.id %}" class="btn btn-outline-info btn-sm rounded-pill w-100">
-                            <i class="fas fa-info-circle me-1"></i> Details
-                        </a>
-                    </div>
+                
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">{{ p.title }}</h5>
+                    {# The mt-auto class pushes the price to the bottom, ensuring vertical alignment #}
+                    <p class="card-price mt-auto">{{ p.price }} Taka</p>
+                </div>
+
+                <div class="card-actions">
+                    <a href="{% url 'accessories_details_non' p.id %}" class="btn btn-outline-light btn-sm rounded-pill">
+                        <i class="fas fa-info-circle me-1"></i> Details
+                    </a>
+                    {# This button is disabled if the item is out of stock #}
+                    <a href="{% url 'login_user' %}" class="btn btn-light btn-sm rounded-pill {% if p.quantity == 0 %}disabled{% endif %}">
+                        <i class="fas fa-shopping-cart me-1"></i> Add to Cart
+                    </a>
                 </div>
             </div>
         </div>
