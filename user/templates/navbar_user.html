@@ -1,125 +1,138 @@
 {% load static %}
-<link rel="stylesheet" href="{% static 'css/user_navbar.css' %}">
-<nav class="navbar navbar-expand-lg navbar-dark custom-navbar">
-    <a class="navbar-brand" href="{% url 'home' %}">
-        <img src="{% static 'images/images (1).png' %}" alt="">
-    </a>
-    <div class="welcome-container">
-    </div>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent" style="margin-left: 20px">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item{% if request.path == '/home/' %} active{% endif %}">
-                <a class="nav-link" href="{% url 'home' %}" style="font-size: large">Home</a>
-            </li>
-            <li class="nav-item{% if request.path == '/ebook_user/' %} active{% endif %}">
-                <a class="nav-link" href="{% url 'ebook_user' %}" style="font-size: large">E-Book</a>
-            </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle{% if '/student/' in request.path %} active{% endif %}" href="#" style="font-size: large" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Student
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="{% url 'academic_user' %}">Academic Books</a>
-                    <a class="dropdown-item" href="{% url 'admission_user' %}">Admission Books</a>
-                    <a class="dropdown-item" href="{% url 'accessories_user' %}">Accessories</a>
-                </div>
-            </li>
-            <li class="nav-item{% if request.path == '/usedBook_user/' %} active{% endif %}">
-                <a class="nav-link" href="{% url 'usedBook_user' %}" style="font-size: large">Used Book</a>
-            </li>
-            <li class="nav-item{% if request.path == '/recommendation/' %} active{% endif %}">
-                <a class="nav-link" href="{% url 'recommendation' %}" style="font-size: large;  transition: background-color 0.3s, transform 0.3s; border-radius: 5px; padding: 10px 15px; ">
-                    Best of BookByte
-                </a>
-            </li>
-            <li class="nav-item{% if request.path == '/chatbot/' %} active{% endif %}">
-                <a class="nav-link" href="{% url 'chatbot' %}" style="font-size: large">Third-(i)</a>
-            </li>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/navbar.css' %}">
 
-            <li class="nav-item{% if request.path == '/chatbot/' %} active{% endif %}">
-                <a class="nav-link" href="{% url 'find_book' %}" style="font-size: large">InfoSnap</a>
-            </li>
-            <li class="nav-item dropdown" style="color: skyblue ; margin-left: 400px" >
-                <a class="btn btn-outline-light{% if '/Profile/' in request.path %} active{% endif %}" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    {{ user.username }}'s Profile
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a href = "{% url 'my_cart' %}" class="dropdown-item" type="button">My Cart</a>
-                    <a href = "{% url 'my_orders' %}" class="dropdown-item" type="button">My Orders</a>
-                    <a href = "{% url 'my_reviews' %}" class="dropdown-item" type="button">My Reviews</a>
-                    <a href = "{% url 'my_donation' %}" class="dropdown-item" type="button">My Donations</a>
-                    <a href = "{% url 'donateBook_user' %}" class="dropdown-item" type="button">Donate Item</a>
-                    <a href = "{% url 'logout_user' %}" class="dropdown-item" type="button">Log Out</a>
-                </div>
-            </li>
-        </ul>
+<nav class="navbar navbar-expand-lg navbar-dark custom-navbar sticky-top">
+    <div class="container-fluid">
+        <!-- Brand Logo -->
+        <a class="navbar-brand" href="{% url 'home' %}">
+            <img src="{% static 'images/images (1).png' %}" alt="Logo">
+        </a>
 
-        <form class="form-inline my-2 my-lg-0" action="{% url 'search_user' %}" method="GET" style="margin-right: 30px">
-            <input class="form-control mr-sm-2" type="search" name="q" placeholder="Search Items..." aria-label="Search">
-            <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
-        </form>
+        <!-- Mobile Menu Toggler -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Collapsible Content -->
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <!-- Left-aligned Navigation Links -->
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/home/' %}active{% endif %}"
+                        href="{% url 'home' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/ebook_user/' %}active{% endif %}"
+                        href="{% url 'ebook_user' %}">E-Book</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/accessories_user/' %}active{% endif %}"
+                        href="{% url 'accessories_user' %}">Accessories</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/usedBook_user/' %}active{% endif %}"
+                        href="{% url 'usedBook_user' %}">Used Book</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/recommendation/' %}active{% endif %}"
+                        href="{% url 'recommendation' %}">Best of BookByte</a>
+                </li>
+                <!-- <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/chatbot/' %}active{% endif %}" href="{% url 'chatbot' %}">Third-(i)</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/find_book/' %}active{% endif %}" href="{% url 'find_book' %}">InfoSnap</a>
+                </li> -->
+            </ul>
+
+            <!-- Right-aligned items -->
+            <div class="d-flex align-items-center gap-3">
+                <!-- SEARCH FORM WRAPPER (NEW) -->
+                <div id="search-wrapper" style="position: relative;">
+                    <form class="d-flex" action="{% url 'search_user' %}" method="GET">
+                        <!-- Add an ID to the input field -->
+                        <input id="search-input" class="form-control me-2" type="search" name="q" placeholder="Search items..."
+                            aria-label="Search" autocomplete="off">
+                        <button class="btn btn-outline-info" type="submit">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </form>
+                    <!-- This div will hold our live suggestions -->
+                    <div id="suggestions-box" class="suggestions-list"></div>
+                </div>
+            </div>
+                <!-- === CORRECTED PROFILE DROPDOWN === -->
+                <div class="dropdown" style="margin-left: 10px;">
+                    <!-- Fixed: data-bs-toggle, unique id -->
+                    <a href="#" class="btn btn-outline-light d-flex align-items-center dropdown-toggle"
+                        id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-user-circle me-2"></i>
+                        {{ user.username }}
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+                        <li><a class="dropdown-item" href="{% url 'my_cart' %}"><i
+                                    class="fas fa-shopping-cart fa-fw me-2"></i>My Cart</a></li>
+                        <li><a class="dropdown-item" href="{% url 'my_orders' %}"><i
+                                    class="fas fa-box fa-fw me-2"></i>My Orders</a></li>
+                        <li><a class="dropdown-item" href="{% url 'my_reviews' %}"><i
+                                    class="fas fa-star fa-fw me-2"></i>My Reviews</a></li>
+                        <li><a class="dropdown-item" href="{% url 'my_donation' %}"><i
+                                    class="fas fa-hand-holding-heart fa-fw me-2"></i>My Donations</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="{% url 'donateBook_user' %}"><i
+                                    class="fas fa-plus-circle fa-fw me-2"></i>Donate Item</a></li>
+                        <li><a class="dropdown-item text-danger" href="{% url 'logout_user' %}"><i
+                                    class="fas fa-sign-out-alt fa-fw me-2"></i>Log Out</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
 </nav>
 
-<body>
-<!-- Modal -->
-<div id="myModal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <span class="close">&times;</span>
-            <button id="goBackButton" class="btn btn-secondary btn-sm">Go Back</button>
-        </div>
-        <div class="container">
-            {% if search_results %}
-                <div class="search-results">
-                    <h2>Search Results for "{{ query }}"</h2>
-                    <ul>
-                        {% for book in search_results %}
-                             Add a link to the book details page 
-                            <li onclick="window.location='{% url 'book_details' book.id %}'">{{ book.title }}</li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            {% else %}
-                <div class="search-results">
-                    <p>No results found for "{{ query }}"</p>
-                </div>
-            {% endif %}
-        </div>
-    </div>
-</div>
-
-
-<!-- JavaScript code to handle form submission and display results in the modal -->
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var modal = document.getElementById("myModal");
-        var searchForm = document.getElementById("searchForm");
-        var searchInput = document.getElementById("searchInput");
+    document.addEventListener('DOMContentLoaded', function () {
+        const searchInput = document.getElementById('search-input');
+        const suggestionsBox = document.getElementById('suggestions-box');
+        const searchWrapper = document.getElementById('search-wrapper');
 
-        // Show modal and submit form on search button click
-        document.getElementById("searchButton").addEventListener('click', function() {
-            modal.style.display = "block";
-            searchForm.submit();
+        searchInput.addEventListener('keyup', function () {
+            const query = searchInput.value;
+
+            if (query.length < 2) {
+                suggestionsBox.style.display = 'none';
+                return;
+            }
+
+            // Fetch suggestions from our Django view
+            fetch(`{% url 'live_search_suggestions_user' %}?q=${query}`)
+                .then(response => response.json())
+                .then(data => {
+                    suggestionsBox.innerHTML = ''; // Clear old suggestions
+                    if (data.suggestions.length > 0) {
+                        data.suggestions.forEach(item => {
+                            const suggestionItem = document.createElement('a');
+                            suggestionItem.href = item.url;
+                            suggestionItem.classList.add('suggestion-item');
+                            suggestionItem.innerHTML = `${item.title} <span class="item-type">${item.type}</span>`;
+                            suggestionsBox.appendChild(suggestionItem);
+                        });
+                        suggestionsBox.style.display = 'block';
+                    } else {
+                        suggestionsBox.style.display = 'none';
+                    }
+                });
         });
 
-        // Get the <span> element that closes the modal
-        var span = document.getElementsByClassName("close")[0];
-
-        // When the user clicks on <span> (x), close the modal
-        span.onclick = function() {
-            modal.style.display = "none";
-        }
-
-        // When the user clicks anywhere outside of the modal, close it
-        window.onclick = function(event) {
-            if (event.target == modal) {
-                modal.style.display = "none";
+        // Hide suggestions when clicking outside
+        document.addEventListener('click', function (event) {
+            if (!searchWrapper.contains(event.target)) {
+                suggestionsBox.style.display = 'none';
             }
-        }
+        });
     });
 </script>
-</body>

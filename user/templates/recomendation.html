@@ -1,72 +1,108 @@
 {% extends 'main_user.html' %}
-{% load static %} 
-{% block content %}
-<link rel="stylesheet" href="{% static 'css/home_user.css' %}">    
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+{% load static %}
 
-<div class="container py-4">
-    <!-- <h2>Recommended Books</h2> -->
+{% block title %}Recommendations{% endblock %}
+
+{% block head_css %}
+{# This is the same CSS file used by your other pages #}
+<link rel="stylesheet" href="{% static 'css/home_user.css' %}">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+
+    <!-- === RECOMMENDED BOOKS SECTION === -->
+    <div class="section-header">
+        <h2 class="fw-light">Best Selling Books</h2>
+    </div>
     <div class="row">
         {% for book in recommended_books %}
-        <div class="col-md-3 mb-4">
-            <div class="card h-100 shadow-sm rounded-4">
-                {% if book.image %}
-                <img src="{{ book.image.url }}" class="card-img-top rounded-top" style="height: 200px; object-fit: contain;" alt="{{ book.title }}">
-                {% endif %}
-                <div class="card-body">
-                    <h6 class="card-title fw-semibold">{{ book.title }}</h6>
-                    <p class="card-text">Price: {{ book.price }} Taka</p>
+        <div class="col-lg-3 col-md-4 col-sm-6 mb-4 d-flex align-items-stretch">
+            <div class="card product-card h-100 w-100">
+                <div class="card-image-wrapper">
+                    {% if book.image %}
+                    <img src="{{ book.image.url }}" class="card-img-top" alt="{{ book.title }}">
+                    {% endif %}
+
+                    <span class="category-badge">{{ book.category|default:'Book' }}</span>
+
                     {% if book.quantity == 0 %}
-                        <p class="card-text fw-bold text-danger">Stock Out!</p>
+                    <div class="stock-out-badge">Out of Stock</div>
                     {% endif %}
                 </div>
-                <div class="card-footer bg-white border-top-0">
-                    <div class="d-flex justify-content-between gap-2">
-                        <a href="{% url 'book_details_user' book.id %}" class="btn btn-outline-info btn-sm rounded-pill w-100">
-                            <i class="fas fa-info-circle me-1"></i> Details
-                        </a>
-                        {% if book.quantity != 0 %}
-                        <a href="{% url 'add_to_cart_book' book.id %}" class="btn btn-outline-success btn-sm rounded-pill w-100">
-                            <i class="fas fa-cart-plus me-1"></i> Add to Cart
-                        </a>
-                        {% endif %}
-                    </div>
+
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">{{ book.title }}</h5>
+                    <p class="card-author text-muted small mb-2">By {{ book.author|default:'Unknown Author' }}</p>
+                    <p class="card-price mt-auto">{{ book.price }} Taka</p>
+                </div>
+
+                <div class="card-actions">
+                    <a href="{% url 'book_details_user' book.id %}" class="btn btn-outline-light btn-sm rounded-pill">
+                        <i class="fas fa-info-circle me-1"></i> Details
+                    </a>
+                    <a href="{% url 'add_to_cart_book' book.id %}"
+                        class="btn btn-light btn-sm rounded-pill {% if book.quantity == 0 %}disabled{% endif %}">
+                        <i class="fas fa-shopping-cart me-1"></i> Add to Cart
+                    </a>
                 </div>
             </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <p class="text-center text-muted">Unavailable!</p>
         </div>
         {% endfor %}
     </div>
 
-    <!-- <h2>Recommended Accessories</h2> -->
+    <hr class="my-5">
+
+    <!-- === RECOMMENDED ACCESSORIES SECTION === -->
+    <div class="section-header">
+        <h2 class="fw-light">Best Selling Accessories</h2>
+    </div>
     <div class="row">
         {% for accessory in recommended_accessories %}
-        <div class="col-md-3 mb-4">
-            <div class="card h-100 shadow-sm rounded-4">
-                {% if accessory.image %}
-                <img src="{{ accessory.image.url }}" class="card-img-top rounded-top" style="height: 200px; object-fit: contain;" alt="{{ accessory.title }}">
-                {% endif %}
-                <div class="card-body">
-                    <h6 class="card-title fw-semibold">{{ accessory.title }}</h6>
-                    <p class="card-text">Price: {{ accessory.price }} Taka</p>
+        <div class="col-lg-3 col-md-4 col-sm-6 mb-4 d-flex align-items-stretch">
+            <div class="card product-card h-100 w-100">
+                <div class="card-image-wrapper">
+                    {% if accessory.image %}
+                    <img src="{{ accessory.image.url }}" class="card-img-top" alt="{{ accessory.title }}">
+                    {% endif %}
+
+                    <span class="category-badge">Accessory</span>
+
                     {% if accessory.quantity == 0 %}
-                        <p class="card-text fw-bold text-danger">Stock Out!</p>
+                    <div class="stock-out-badge">Out of Stock</div>
                     {% endif %}
                 </div>
-                <div class="card-footer bg-white border-top-0">
-                    <div class="d-flex justify-content-between gap-2">
-                        <a href="{% url 'accessories_details_user' accessory.id %}" class="btn btn-outline-info btn-sm rounded-pill w-100">
-                            <i class="fas fa-info-circle me-1"></i> Details
-                        </a>
-                        {% if accessory.quantity != 0 %}
-                        <a href="{% url 'add_to_cart_accessories' accessory.id %}" class="btn btn-outline-success btn-sm rounded-pill w-100">
-                            <i class="fas fa-cart-plus me-1"></i> Add to Cart
-                        </a>
-                        {% endif %}
-                    </div>
+
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">{{ accessory.title }}</h5>
+                    {# Accessories don't have an author field, so it's omitted #}
+                    <p class="card-price mt-auto">{{ accessory.price }} Taka</p>
+                </div>
+
+                <div class="card-actions">
+                    <a href="{% url 'accessories_details_user' accessory.id %}"
+                        class="btn btn-outline-light btn-sm rounded-pill">
+                        <i class="fas fa-info-circle me-1"></i> Details
+                    </a>
+                    <a href="{% url 'add_to_cart_accessories' accessory.id %}"
+                        class="btn btn-light btn-sm rounded-pill {% if accessory.quantity == 0 %}disabled{% endif %}">
+                        <i class="fas fa-shopping-cart me-1"></i> Add to Cart
+                    </a>
                 </div>
             </div>
         </div>
+        {% empty %}
+        <div class="col-12">
+            <p class="text-center text-muted">Unavailable!</p>
+        </div>
         {% endfor %}
     </div>
+
 </div>
 {% endblock %}
